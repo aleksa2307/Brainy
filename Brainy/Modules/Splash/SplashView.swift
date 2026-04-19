@@ -29,6 +29,7 @@ final class SplashView: UIView {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
+        setInitialState()
     }
 
     required init?(coder: NSCoder) { fatalError() }
@@ -36,6 +37,153 @@ final class SplashView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = bounds
+    }
+
+    // MARK: - Animation Entry Point
+
+    func playEntranceAnimation() {
+        animateBlobs()
+        animateIcon(delay: 0.25)
+        animateFadeUp(titleLabel,    delay: 0.55, distance: 22)
+        animateFadeUp(subtitleLabel, delay: 0.70, distance: 18)
+
+        categoriesStack.arrangedSubviews.enumerated().forEach { i, pill in
+            animateFadeUp(pill, delay: 0.85 + Double(i) * 0.09, distance: 20)
+        }
+
+        animateFadeUp(statsStack,      delay: 1.15, distance: 18)
+        animateButton(getStartedButton, delay: 1.30)
+        animateFadeUp(signInButton,    delay: 1.46, distance: 12)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.startBlobFloat()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) { [weak self] in
+            self?.startIconPulse()
+        }
+    }
+}
+
+// MARK: - Initial State
+
+private extension SplashView {
+
+    func setInitialState() {
+        [blob1, blob2, blob3, blob4].forEach {
+            $0.alpha = 0
+            $0.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
+        }
+
+        appIconContainer.alpha = 0
+        appIconContainer.transform = CGAffineTransform(scaleX: 0.15, y: 0.15)
+
+        [titleLabel, subtitleLabel, statsStack, getStartedButton, signInButton].forEach {
+            $0.alpha = 0
+            $0.transform = CGAffineTransform(translationX: 0, y: 24)
+        }
+
+        categoriesStack.arrangedSubviews.forEach {
+            $0.alpha = 0
+            $0.transform = CGAffineTransform(translationX: 0, y: 24)
+        }
+    }
+}
+
+// MARK: - Animations
+
+private extension SplashView {
+
+    func animateBlobs() {
+        let configs: [(UIView, CGFloat, TimeInterval)] = [
+            (blob1, 0.07, 0.00),
+            (blob4, 0.06, 0.06),
+            (blob2, 0.05, 0.12),
+            (blob3, 0.06, 0.18)
+        ]
+        configs.forEach { blob, alpha, delay in
+            UIView.animate(
+                withDuration: 0.9,
+                delay: delay,
+                usingSpringWithDamping: 0.75,
+                initialSpringVelocity: 0.2,
+                options: .allowUserInteraction
+            ) {
+                blob.alpha = alpha
+                blob.transform = .identity
+            }
+        }
+    }
+
+    func animateIcon(delay: TimeInterval) {
+        UIView.animate(
+            withDuration: 0.75,
+            delay: delay,
+            usingSpringWithDamping: 0.55,
+            initialSpringVelocity: 0.4,
+            options: .allowUserInteraction
+        ) {
+            self.appIconContainer.alpha = 1
+            self.appIconContainer.transform = .identity
+        }
+    }
+
+    func animateFadeUp(_ view: UIView, delay: TimeInterval, distance: CGFloat) {
+        view.transform = CGAffineTransform(translationX: 0, y: distance)
+        UIView.animate(
+            withDuration: 0.55,
+            delay: delay,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.1,
+            options: .allowUserInteraction
+        ) {
+            view.alpha = 1
+            view.transform = .identity
+        }
+    }
+
+    func animateButton(_ view: UIView, delay: TimeInterval) {
+        view.transform = CGAffineTransform(translationX: 0, y: 30)
+        UIView.animate(
+            withDuration: 0.7,
+            delay: delay,
+            usingSpringWithDamping: 0.6,
+            initialSpringVelocity: 0.3,
+            options: .allowUserInteraction
+        ) {
+            view.alpha = 1
+            view.transform = .identity
+        }
+    }
+
+    // Continuous gentle float on blobs
+    func startBlobFloat() {
+        typealias Float = (UIView, CGFloat, CGFloat, TimeInterval, TimeInterval)
+        let floats: [Float] = [
+            (blob1, -10,  14, 3.6, 0.0),
+            (blob2,  12, -10, 4.1, 0.6),
+            (blob3,  -8, -12, 3.9, 0.3),
+            (blob4,  14,   8, 4.3, 0.9)
+        ]
+        floats.forEach { blob, tx, ty, duration, delay in
+            UIView.animate(
+                withDuration: duration,
+                delay: delay,
+                options: [.repeat, .autoreverse, .curveEaseInOut, .allowUserInteraction]
+            ) {
+                blob.transform = CGAffineTransform(translationX: tx, y: ty)
+            }
+        }
+    }
+
+    // Subtle scale breathe on the icon
+    func startIconPulse() {
+        UIView.animate(
+            withDuration: 2.2,
+            delay: 0,
+            options: [.repeat, .autoreverse, .curveEaseInOut, .allowUserInteraction]
+        ) {
+            self.appIconContainer.transform = CGAffineTransform(scaleX: 1.07, y: 1.07)
+        }
     }
 }
 
@@ -116,10 +264,10 @@ private extension SplashView {
         addSubview(categoriesStack)
 
         let items: [(String, String, UIColor)] = [
-            ("🌍", "Geography", UIColor(red: 6/255, green: 182/255, blue: 212/255, alpha: 1)),
-            ("🔬", "Science",   UIColor(red: 34/255, green: 197/255, blue: 94/255, alpha: 1)),
-            ("🎬", "Movies",    UIColor(red: 168/255, green: 85/255, blue: 247/255, alpha: 1)),
-            ("🏛️", "History",   UIColor(red: 245/255, green: 158/255, blue: 11/255, alpha: 1))
+            ("🌍", "Geography", UIColor(red: 6/255,   green: 182/255, blue: 212/255, alpha: 1)),
+            ("🔬", "Science",   UIColor(red: 34/255,  green: 197/255, blue: 94/255,  alpha: 1)),
+            ("🎬", "Movies",    UIColor(red: 168/255, green: 85/255,  blue: 247/255, alpha: 1)),
+            ("🏛️", "History",   UIColor(red: 245/255, green: 158/255, blue: 11/255,  alpha: 1))
         ]
         items.forEach { emoji, title, color in
             categoriesStack.addArrangedSubview(makeCategoryPill(emoji: emoji, title: title, color: color))
@@ -242,22 +390,22 @@ private extension SplashView {
 
     func setupConstraints() {
         blob1.snp.makeConstraints {
-            $0.width.height.equalTo(280)
+            $0.size.equalTo(280)
             $0.leading.equalToSuperview().offset(173)
             $0.top.equalToSuperview().offset(-60)
         }
         blob2.snp.makeConstraints {
-            $0.width.height.equalTo(220)
+            $0.size.equalTo(220)
             $0.leading.equalToSuperview().offset(-80)
             $0.top.equalToSuperview().offset(100)
         }
         blob3.snp.makeConstraints {
-            $0.width.height.equalTo(200)
+            $0.size.equalTo(200)
             $0.leading.equalToSuperview().offset(243)
             $0.top.equalToSuperview().offset(532)
         }
         blob4.snp.makeConstraints {
-            $0.width.height.equalTo(260)
+            $0.size.equalTo(260)
             $0.leading.equalToSuperview().offset(-60)
             $0.top.equalToSuperview().offset(652)
         }

@@ -13,6 +13,11 @@ final class SplashVC: UIViewController {
         splashView.onGetStarted = { [weak self] in self?.showOnboarding() }
         splashView.onSignIn = { [weak self] in self?.showSignIn() }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        splashView.playEntranceAnimation()
+    }
 }
 
 // MARK: - Navigation
