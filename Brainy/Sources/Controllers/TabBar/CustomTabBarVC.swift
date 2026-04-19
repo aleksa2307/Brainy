@@ -28,7 +28,7 @@ private extension CustomTabBarViewController {
 
         tabBarView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalTo(view.safeBottom)
         }
     }
 
