@@ -16,7 +16,7 @@ final class ProfileView: UIView {
 
 private extension ProfileView {
     func setupUI() {
-        
+        backgroundColor = .red
     }
     
     func setupConstraints() {

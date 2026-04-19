@@ -78,12 +78,12 @@ private extension OnboardingContainerView {
         pageContainerView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         skipButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(60)
+            $0.top.equalTo(safeTop)
             $0.trailing.equalToSuperview().inset(24)
         }
 
         actionButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(90)
+            $0.bottom.equalTo(safeBottom)
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.height.equalTo(56)
         }

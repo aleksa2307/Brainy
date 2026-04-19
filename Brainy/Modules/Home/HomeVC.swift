@@ -3,8 +3,8 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
     
-    private var <#view#>: <#View#> {
-        return view as! <#View#>
+    private var homeView: HomeView {
+        return view as! HomeView
     }
     
     override func viewDidLoad() {
@@ -12,7 +12,7 @@ final class HomeViewController: UIViewController {
     }
     
     override func loadView() {
-        view = <#View#>()
+        view = HomeView()
     }
 }
 

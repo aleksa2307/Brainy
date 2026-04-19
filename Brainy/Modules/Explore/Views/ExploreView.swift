@@ -16,7 +16,7 @@ final class ExploreView: UIView {
 
 private extension ExploreView {
     func setupUI() {
-        
+        backgroundColor = .blue
     }
     
     func setupConstraints() {
