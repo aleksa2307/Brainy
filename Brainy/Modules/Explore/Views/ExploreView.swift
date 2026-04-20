@@ -28,6 +28,8 @@ final class ExploreView: UIView, UITextFieldDelegate, UIGestureRecognizerDelegat
         fatalError("init(coder:) has not been implemented")
     }
 
+    var onQuizSelected: (() -> Void)?
+
     func reloadFromViewModel() {
         guard let viewModel else { return }
         resultsLabel.text = viewModel.resultsCountText
@@ -36,6 +38,7 @@ final class ExploreView: UIView, UITextFieldDelegate, UIGestureRecognizerDelegat
         for item in viewModel.filteredQuizzes {
             let card = ExploreQuizCardView()
             card.configure(with: item)
+            card.onTap = { [weak self] in self?.onQuizSelected?() }
             cardsStack.addArrangedSubview(card)
         }
     }

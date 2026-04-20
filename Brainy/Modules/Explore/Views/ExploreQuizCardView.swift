@@ -49,6 +49,8 @@ private final class DiagonalTintView: UIView {
 
 final class ExploreQuizCardView: UIView {
 
+    var onTap: (() -> Void)?
+
     private let shadowContainer = UIView()
     private let card = UIView()
     private let topBar = HorizontalGradientView()
@@ -68,9 +70,13 @@ final class ExploreQuizCardView: UIView {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tap)
     }
 
     required init?(coder: NSCoder) { fatalError() }
+
+    @objc private func handleTap() { onTap?() }
 
     func configure(with item: ExploreQuizItem) {
         topBar.setColors([
