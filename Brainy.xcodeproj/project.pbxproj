@@ -45,6 +45,10 @@
 		ED3398112F959400009AD000 /* ExploreQuizItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398012F959400009AD000 /* ExploreQuizItem.swift */; };
 		ED3398122F959400009AD000 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398022F959400009AD000 /* ExploreViewModel.swift */; };
 		ED3398132F959400009AD000 /* ExploreQuizCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398032F959400009AD000 /* ExploreQuizCardView.swift */; };
+		FA1002102F970000009AD000 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1002002F970000009AD000 /* LoginVC.swift */; };
+		FA1003102F970000009AD000 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1003002F970000009AD000 /* LoginView.swift */; };
+		FA1004102F970000009AD000 /* CreateAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1004002F970000009AD000 /* CreateAccountVC.swift */; };
+		FA1005102F970000009AD000 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1005002F970000009AD000 /* CreateAccountView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +91,10 @@
 		ED3398012F959400009AD000 /* ExploreQuizItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreQuizItem.swift; sourceTree = "<group>"; };
 		ED3398022F959400009AD000 /* ExploreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
 		ED3398032F959400009AD000 /* ExploreQuizCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreQuizCardView.swift; sourceTree = "<group>"; };
+		FA1002002F970000009AD000 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		FA1003002F970000009AD000 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FA1004002F970000009AD000 /* CreateAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountVC.swift; sourceTree = "<group>"; };
+		FA1005002F970000009AD000 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA1000002F970000009AD000 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				FA1001002F970000009AD000 /* Views */,
+				FA1002002F970000009AD000 /* LoginVC.swift */,
+				FA1004002F970000009AD000 /* CreateAccountVC.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		FA1001002F970000009AD000 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA1003002F970000009AD000 /* LoginView.swift */,
+				FA1005002F970000009AD000 /* CreateAccountView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		AC1000102F958000009AD000 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +244,7 @@
 		ED3397AB2F957F5A009AD000 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				FA1000002F970000009AD000 /* Auth */,
 				ED3397E02F966292009AD000 /* Ranks */,
 				ED3397DA2F96184F009AD000 /* Settings */,
 				AC1000202F958000009AD000 /* Splash */,
@@ -514,6 +542,10 @@
 				CC0100402FA00000009AD000 /* QuizResultsView.swift in Sources */,
 				CC0100502FA00000009AD000 /* QuizVC.swift in Sources */,
 				CC0100602FA00000009AD000 /* QuizResultsVC.swift in Sources */,
+				FA1002102F970000009AD000 /* LoginVC.swift in Sources */,
+				FA1003102F970000009AD000 /* LoginView.swift in Sources */,
+				FA1004102F970000009AD000 /* CreateAccountVC.swift in Sources */,
+				FA1005102F970000009AD000 /* CreateAccountView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

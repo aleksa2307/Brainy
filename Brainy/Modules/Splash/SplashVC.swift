@@ -29,6 +29,9 @@ private extension SplashVC {
     }
 
     func showSignIn() {
-        
+        let vc = LoginVC()
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
 }
