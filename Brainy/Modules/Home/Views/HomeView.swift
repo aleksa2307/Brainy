@@ -83,9 +83,26 @@ final class HomeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func configure(user: User, stats: UserStats) {
+        let firstName = user.name.components(separatedBy: " ").first ?? user.name
+        titleLabel.text = "Hi, \(firstName)!"
+        greetingLabel.text = timeGreeting()
+        streakCountLabel.text = "\(stats.currentStreak)"
+    }
 }
 
 private extension HomeView {
+
+    func timeGreeting() -> String {
+        let h = Calendar.current.component(.hour, from: Date())
+        switch h {
+        case 5..<12:  return "Good morning 🌤️"
+        case 12..<17: return "Good afternoon ☀️"
+        case 17..<21: return "Good evening 🌅"
+        default:      return "Good night 🌙"
+        }
+    }
 
     func setupUI() {
         backgroundColor = UIColor(hex: "f8fafc")

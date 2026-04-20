@@ -6,7 +6,7 @@ final class RanksView: UIView {
     private enum Period { case today, week, month }
 
     private struct Entry {
-        let rank: Int
+        var rank: Int
         let initials: String
         let color: UIColor
         let name: String
@@ -17,41 +17,63 @@ final class RanksView: UIView {
         let isMe: Bool
     }
 
-    private let entriesByPeriod: [Period: [Entry]] = [
+    private let fakePlayers: [Period: [Entry]] = [
         .today: [
-            Entry(rank: 1,  initials: "SC", color: UIColor(hex: "4f46e5"), name: "Sofia Chen",    level: 35, username: "@sofia_c",  points: 2800,  trend: .up,      isMe: false),
-            Entry(rank: 2,  initials: "LW", color: UIColor(hex: "22c55e"), name: "Liam Walsh",    level: 32, username: "@liamw",    points: 2100,  trend: .up,      isMe: false),
-            Entry(rank: 3,  initials: "NK", color: UIColor(hex: "f59e0b"), name: "Noah Kim",      level: 29, username: "@noahk",    points: 1950,  trend: .down,    isMe: false),
-            Entry(rank: 4,  initials: "AT", color: UIColor(hex: "4f46e5"), name: "Alex Torres",   level: 22, username: "@alex_t",   points: 1640,  trend: .up,      isMe: true),
-            Entry(rank: 5,  initials: "ED", color: UIColor(hex: "a855f7"), name: "Emma Davis",    level: 27, username: "@emmad",    points: 1500,  trend: .neutral, isMe: false),
-            Entry(rank: 6,  initials: "JB", color: UIColor(hex: "ef4444"), name: "James Brown",   level: 25, username: "@jamesb",   points: 1380,  trend: .down,    isMe: false),
-            Entry(rank: 7,  initials: "ML", color: UIColor(hex: "14b8a6"), name: "Mia Lopez",     level: 20, username: "@mialopez", points: 920,   trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "SC",  color: UIColor(hex: "4f46e5"), name: "Sofia Chen",   level: 35, username: "@sofia_c",  points: 2800,  trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "LW",  color: UIColor(hex: "22c55e"), name: "Liam Walsh",   level: 32, username: "@liamw",    points: 2100,  trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "NK",  color: UIColor(hex: "f59e0b"), name: "Noah Kim",     level: 29, username: "@noahk",    points: 1950,  trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "ED",  color: UIColor(hex: "a855f7"), name: "Emma Davis",   level: 27, username: "@emmad",    points: 1500,  trend: .neutral, isMe: false),
+            Entry(rank: 0, initials: "JB",  color: UIColor(hex: "ef4444"), name: "James Brown",  level: 25, username: "@jamesb",   points: 1380,  trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "ML",  color: UIColor(hex: "14b8a6"), name: "Mia Lopez",    level: 20, username: "@mialopez", points: 920,   trend: .up,      isMe: false),
         ],
         .week: [
-            Entry(rank: 1,  initials: "SC", color: UIColor(hex: "4f46e5"), name: "Sofia Chen",    level: 35, username: "@sofia_c",  points: 15800, trend: .up,      isMe: false),
-            Entry(rank: 2,  initials: "ML2", color: UIColor(hex: "06b6d4"), name: "Marcus Lee",   level: 33, username: "@marcusl",  points: 14300, trend: .up,      isMe: false),
-            Entry(rank: 3,  initials: "AJ", color: UIColor(hex: "ec4899"), name: "Aria Johnson",  level: 31, username: "@ariaj",    points: 13800, trend: .down,    isMe: false),
-            Entry(rank: 4,  initials: "LW", color: UIColor(hex: "22c55e"), name: "Liam Walsh",    level: 32, username: "@liamw",    points: 12100, trend: .up,      isMe: false),
-            Entry(rank: 5,  initials: "NK", color: UIColor(hex: "f59e0b"), name: "Noah Kim",      level: 29, username: "@noahk",    points: 11200, trend: .up,      isMe: false),
-            Entry(rank: 6,  initials: "ED", color: UIColor(hex: "a855f7"), name: "Emma Davis",    level: 27, username: "@emmad",    points: 10500, trend: .down,    isMe: false),
-            Entry(rank: 7,  initials: "JB", color: UIColor(hex: "ef4444"), name: "James Brown",   level: 25, username: "@jamesb",   points: 9800,  trend: .neutral, isMe: false),
-            Entry(rank: 8,  initials: "AT", color: UIColor(hex: "4f46e5"), name: "Alex Torres",   level: 22, username: "@alex_t",   points: 8640,  trend: .up,      isMe: true),
-            Entry(rank: 9,  initials: "ML", color: UIColor(hex: "14b8a6"), name: "Mia Lopez",     level: 20, username: "@mialopez", points: 7920,  trend: .down,    isMe: false),
-            Entry(rank: 10, initials: "OP", color: UIColor(hex: "6366f1"), name: "Oliver Park",   level: 18, username: "@oliverp",  points: 7100,  trend: .neutral, isMe: false),
+            Entry(rank: 0, initials: "SC",  color: UIColor(hex: "4f46e5"), name: "Sofia Chen",   level: 35, username: "@sofia_c",  points: 15800, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "ML2", color: UIColor(hex: "06b6d4"), name: "Marcus Lee",   level: 33, username: "@marcusl",  points: 14300, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "AJ",  color: UIColor(hex: "ec4899"), name: "Aria Johnson", level: 31, username: "@ariaj",    points: 13800, trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "LW",  color: UIColor(hex: "22c55e"), name: "Liam Walsh",   level: 32, username: "@liamw",    points: 12100, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "NK",  color: UIColor(hex: "f59e0b"), name: "Noah Kim",     level: 29, username: "@noahk",    points: 11200, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "ED",  color: UIColor(hex: "a855f7"), name: "Emma Davis",   level: 27, username: "@emmad",    points: 10500, trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "JB",  color: UIColor(hex: "ef4444"), name: "James Brown",  level: 25, username: "@jamesb",   points: 9800,  trend: .neutral, isMe: false),
+            Entry(rank: 0, initials: "ML",  color: UIColor(hex: "14b8a6"), name: "Mia Lopez",    level: 20, username: "@mialopez", points: 7920,  trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "OP",  color: UIColor(hex: "6366f1"), name: "Oliver Park",  level: 18, username: "@oliverp",  points: 7100,  trend: .neutral, isMe: false),
         ],
         .month: [
-            Entry(rank: 1,  initials: "LW", color: UIColor(hex: "22c55e"), name: "Liam Walsh",    level: 32, username: "@liamw",    points: 48200, trend: .up,      isMe: false),
-            Entry(rank: 2,  initials: "SC", color: UIColor(hex: "4f46e5"), name: "Sofia Chen",    level: 35, username: "@sofia_c",  points: 45100, trend: .down,    isMe: false),
-            Entry(rank: 3,  initials: "NK", color: UIColor(hex: "f59e0b"), name: "Noah Kim",      level: 29, username: "@noahk",    points: 41600, trend: .up,      isMe: false),
-            Entry(rank: 4,  initials: "ED", color: UIColor(hex: "a855f7"), name: "Emma Davis",    level: 27, username: "@emmad",    points: 38900, trend: .up,      isMe: false),
-            Entry(rank: 5,  initials: "AJ", color: UIColor(hex: "ec4899"), name: "Aria Johnson",  level: 31, username: "@ariaj",    points: 35400, trend: .neutral, isMe: false),
-            Entry(rank: 6,  initials: "AT", color: UIColor(hex: "4f46e5"), name: "Alex Torres",   level: 22, username: "@alex_t",   points: 29800, trend: .up,      isMe: true),
-            Entry(rank: 7,  initials: "JB", color: UIColor(hex: "ef4444"), name: "James Brown",   level: 25, username: "@jamesb",   points: 27300, trend: .down,    isMe: false),
-            Entry(rank: 8,  initials: "ML", color: UIColor(hex: "14b8a6"), name: "Mia Lopez",     level: 20, username: "@mialopez", points: 24100, trend: .up,      isMe: false),
-            Entry(rank: 9,  initials: "OP", color: UIColor(hex: "6366f1"), name: "Oliver Park",   level: 18, username: "@oliverp",  points: 21500, trend: .neutral, isMe: false),
-            Entry(rank: 10, initials: "ML2", color: UIColor(hex: "06b6d4"), name: "Marcus Lee",   level: 33, username: "@marcusl",  points: 19800, trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "LW",  color: UIColor(hex: "22c55e"), name: "Liam Walsh",   level: 32, username: "@liamw",    points: 48200, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "SC",  color: UIColor(hex: "4f46e5"), name: "Sofia Chen",   level: 35, username: "@sofia_c",  points: 45100, trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "NK",  color: UIColor(hex: "f59e0b"), name: "Noah Kim",     level: 29, username: "@noahk",    points: 41600, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "ED",  color: UIColor(hex: "a855f7"), name: "Emma Davis",   level: 27, username: "@emmad",    points: 38900, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "AJ",  color: UIColor(hex: "ec4899"), name: "Aria Johnson", level: 31, username: "@ariaj",    points: 35400, trend: .neutral, isMe: false),
+            Entry(rank: 0, initials: "JB",  color: UIColor(hex: "ef4444"), name: "James Brown",  level: 25, username: "@jamesb",   points: 27300, trend: .down,    isMe: false),
+            Entry(rank: 0, initials: "ML",  color: UIColor(hex: "14b8a6"), name: "Mia Lopez",    level: 20, username: "@mialopez", points: 24100, trend: .up,      isMe: false),
+            Entry(rank: 0, initials: "OP",  color: UIColor(hex: "6366f1"), name: "Oliver Park",  level: 18, username: "@oliverp",  points: 21500, trend: .neutral, isMe: false),
+            Entry(rank: 0, initials: "ML2", color: UIColor(hex: "06b6d4"), name: "Marcus Lee",   level: 33, username: "@marcusl",  points: 19800, trend: .down,    isMe: false),
         ],
     ]
+
+    private var userEntries: [Period: Entry] = [:]
+
+    func configure(user: User, stats: UserStats) {
+        userEntries = [
+            .today: Entry(rank: 0, initials: user.initials, color: UIColor(hex: "6366f1"),
+                          name: user.name, level: stats.level, username: user.username,
+                          points: stats.todayXP, trend: .neutral, isMe: true),
+            .week:  Entry(rank: 0, initials: user.initials, color: UIColor(hex: "6366f1"),
+                          name: user.name, level: stats.level, username: user.username,
+                          points: stats.weeklyXP, trend: .neutral, isMe: true),
+            .month: Entry(rank: 0, initials: user.initials, color: UIColor(hex: "6366f1"),
+                          name: user.name, level: stats.level, username: user.username,
+                          points: stats.totalXP, trend: .neutral, isMe: true),
+        ]
+        reloadContent()
+    }
+
+    private func buildEntries(for period: Period) -> [Entry] {
+        var list = fakePlayers[period] ?? []
+        if let me = userEntries[period] { list.append(me) }
+        list.sort { $0.points > $1.points }
+        for i in list.indices { list[i].rank = i + 1 }
+        return list
+    }
 
     private var currentPeriod: Period = .week {
         didSet { reloadContent() }
@@ -209,7 +231,7 @@ private extension RanksView {
         }
         setActive(activeBtn)
 
-        let entries = entriesByPeriod[currentPeriod] ?? []
+        let entries = buildEntries(for: currentPeriod)
         let top3 = Array(entries.prefix(3))
         let rest = Array(entries.dropFirst(3))
 

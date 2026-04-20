@@ -14,9 +14,6 @@ final class LoginVC: UIViewController {
         loginView.onLogin = { [weak self] in self?.handleLogin() }
         loginView.onForgotPassword = { [weak self] in self?.handleForgotPassword() }
         loginView.onSignUp = { [weak self] in self?.showCreateAccount() }
-        loginView.onApple = { [weak self] in self?.handleAppleLogin() }
-        loginView.onGoogle = { [weak self] in self?.handleGoogleLogin() }
-
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
@@ -32,7 +29,13 @@ private extension LoginVC {
             showAlert(message: "Please enter your email and password.")
             return
         }
-        showMainApp()
+
+        switch AuthManager.shared.login(email: email, password: password) {
+        case .success:
+            showMainApp()
+        case .failure(let error):
+            showAlert(message: error.message)
+        }
     }
 
     func handleForgotPassword() {
@@ -48,14 +51,6 @@ private extension LoginVC {
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true)
-    }
-
-    func handleAppleLogin() {
-        showMainApp()
-    }
-
-    func handleGoogleLogin() {
-        showMainApp()
     }
 
     func showMainApp() {

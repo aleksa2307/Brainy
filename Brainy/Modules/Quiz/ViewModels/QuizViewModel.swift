@@ -1,5 +1,12 @@
 import Foundation
 
+struct QuizMeta {
+    let title: String
+    let emoji: String
+    let category: String
+    static let `default` = QuizMeta(title: "General Quiz", emoji: "🧠", category: "General")
+}
+
 protocol QuizViewModelDelegate: AnyObject {
     func quizViewModel(_ vm: QuizViewModel, didTickTimer seconds: Int, progress: Float)
     func quizViewModel(_ vm: QuizViewModel, didReveal selectedIndex: Int, isCorrect: Bool)
@@ -9,6 +16,7 @@ protocol QuizViewModelDelegate: AnyObject {
 final class QuizViewModel {
 
     let questions: [QuizQuestion]
+    let meta: QuizMeta
     private(set) var currentIndex = 0
     private(set) var xp = 0
     private(set) var correctCount = 0
@@ -54,8 +62,9 @@ final class QuizViewModel {
         }
     }
 
-    init(questions: [QuizQuestion] = QuizQuestion.sampleQuestions) {
+    init(questions: [QuizQuestion] = QuizQuestion.sampleQuestions, meta: QuizMeta = .default) {
         self.questions = questions
+        self.meta = meta
     }
 
     func startTimer() {

@@ -16,7 +16,11 @@ final class SplashVC: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        splashView.playEntranceAnimation()
+        if AuthManager.shared.isLoggedIn {
+            showMainApp()
+        } else {
+            splashView.playEntranceAnimation()
+        }
     }
 }
 
@@ -33,5 +37,12 @@ private extension SplashVC {
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true)
+    }
+
+    func showMainApp() {
+        let tabBarVC = CustomTabBarViewController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        tabBarVC.modalTransitionStyle = .crossDissolve
+        present(tabBarVC, animated: false)
     }
 }

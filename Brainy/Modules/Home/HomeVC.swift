@@ -2,20 +2,17 @@ import UIKit
 import SnapKit
 
 final class HomeViewController: UIViewController {
-    
-    private var homeView: HomeView {
-        return view as! HomeView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
+
+    private var homeView: HomeView { view as! HomeView }
+
     override func loadView() {
         view = HomeView()
     }
-}
 
-private extension HomeViewController {
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let user = AuthManager.shared.currentUser {
+            homeView.configure(user: user, stats: StatsManager.shared.stats)
+        }
+    }
 }

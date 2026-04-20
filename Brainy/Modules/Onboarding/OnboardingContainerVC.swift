@@ -55,9 +55,10 @@ private extension OnboardingContainerVC {
     }
 
     func finish() {
-        let tabBarVC = CustomTabBarViewController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        tabBarVC.modalTransitionStyle = .crossDissolve
-        present(tabBarVC, animated: true)
+        let vc = CreateAccountVC()
+        vc.hidesBackButton = true
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
 }

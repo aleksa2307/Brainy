@@ -73,6 +73,33 @@ final class ChallengesView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func configure(stats: UserStats) {
+        // Weekly challenge
+        let done = min(stats.weeklyQuizzesPlayed, 5)
+        weeklyProgressValue.text = "\(done)/5"
+        let progress = CGFloat(done) / 5.0
+        weeklyProgressFill.snp.remakeConstraints {
+            $0.leading.top.bottom.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(max(progress, 0.01))
+        }
+        let days = daysLeftInWeek(from: stats.weekStartDate)
+        weeklyDaysLabel.text = days == 1 ? "1 day left" : "\(days) days left"
+
+        // Daily missions
+        dailyStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        [
+            makeSpeedRoundCard(isCompleted: stats.todayQuizzesPlayed > 0),
+            makePerfectScoreCard(isCompleted: stats.hasPerfectScoreToday),
+            makeStreakKeeperCard(isCompleted: stats.currentStreak > 0)
+        ].forEach { dailyStack.addArrangedSubview($0) }
+    }
+
+    private func daysLeftInWeek(from start: Date?) -> Int {
+        guard let start else { return 7 }
+        let days = Calendar.current.dateComponents([.day], from: start, to: Date()).day ?? 0
+        return max(0, 7 - days)
+    }
 }
 
 private extension ChallengesView {
@@ -155,7 +182,7 @@ private extension ChallengesView {
         dailyStack.axis = .vertical
         dailyStack.spacing = 12
         dailyStack.alignment = .fill
-        [makeSpeedRoundCard(), makePerfectScoreCard(), makeStreakKeeperCard()].forEach { dailyStack.addArrangedSubview($0) }
+        [makeSpeedRoundCard(isCompleted: false), makePerfectScoreCard(isCompleted: false), makeStreakKeeperCard(isCompleted: false)].forEach { dailyStack.addArrangedSubview($0) }
 
         friendsHeaderLabel.text = "👥 Friend Challenges"
         friendsHeaderLabel.font = .systemFont(ofSize: 18, weight: .bold)
@@ -373,7 +400,7 @@ private extension ChallengesView {
         v.layer.shadowRadius = 12
     }
 
-    func makeSpeedRoundCard() -> UIView {
+    func makeSpeedRoundCard(isCompleted: Bool) -> UIView {
         let row = UIView()
         cardContainerShadow(row)
 
@@ -397,50 +424,23 @@ private extension ChallengesView {
         desc.numberOfLines = 2
 
         let xp = xpRow(icon: "bolt.fill", text: "+200 XP", tint: UIColor(hex: "f59e0b"))
-        let time = timeRow(text: "8h 23m")
-
-        let meta = UIStackView(arrangedSubviews: [xp, time])
-        meta.axis = .horizontal
-        meta.spacing = 12
-
-        let textStack = UIStackView(arrangedSubviews: [title, desc, meta])
+        let textStack = UIStackView(arrangedSubviews: [title, desc, xp])
         textStack.axis = .vertical
         textStack.spacing = 8
         textStack.setCustomSpacing(4, after: title)
 
-        let chevron = UIImageView(image: UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate))
-        chevron.tintColor = UIColor(hex: "cbd5e1")
-        chevron.contentMode = .scaleAspectFit
-        chevron.snp.makeConstraints { $0.size.equalTo(18) }
-
+        let accessory = makeAccessory(isCompleted: isCompleted)
         iconBg.addSubview(emoji)
         emoji.snp.makeConstraints { $0.center.equalToSuperview() }
-
-        [iconBg, textStack, chevron].forEach { row.addSubview($0) }
-
-        iconBg.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(52)
-        }
-
-        textStack.snp.makeConstraints {
-            $0.leading.equalTo(iconBg.snp.trailing).offset(14)
-            $0.top.bottom.equalToSuperview().inset(16)
-            $0.trailing.equalTo(chevron.snp.leading).offset(-12)
-        }
-
-        chevron.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-
-        row.snp.makeConstraints { $0.height.greaterThanOrEqualTo(124) }
-
+        [iconBg, textStack, accessory].forEach { row.addSubview($0) }
+        iconBg.snp.makeConstraints { $0.leading.equalToSuperview().inset(16); $0.centerY.equalToSuperview(); $0.size.equalTo(52) }
+        textStack.snp.makeConstraints { $0.leading.equalTo(iconBg.snp.trailing).offset(14); $0.top.bottom.equalToSuperview().inset(16); $0.trailing.equalTo(accessory.snp.leading).offset(-12) }
+        accessory.snp.makeConstraints { $0.trailing.equalToSuperview().inset(16); $0.centerY.equalToSuperview() }
+        row.snp.makeConstraints { $0.height.greaterThanOrEqualTo(100) }
         return row
     }
 
-    func makePerfectScoreCard() -> UIView {
+    func makePerfectScoreCard(isCompleted: Bool) -> UIView {
         let row = UIView()
         cardContainerShadow(row)
 
@@ -464,49 +464,22 @@ private extension ChallengesView {
         desc.numberOfLines = 2
 
         let xp = xpRow(icon: "bolt.fill", text: "+300 XP", tint: UIColor(hex: "4f46e5"))
-        let time = timeRow(text: "8h 23m")
-
-        let meta = UIStackView(arrangedSubviews: [xp, time])
-        meta.axis = .horizontal
-        meta.spacing = 12
-
-        let textStack = UIStackView(arrangedSubviews: [title, desc, meta])
+        let textStack = UIStackView(arrangedSubviews: [title, desc, xp])
         textStack.axis = .vertical
         textStack.spacing = 8
 
-        let chevron = UIImageView(image: UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate))
-        chevron.tintColor = UIColor(hex: "cbd5e1")
-        chevron.contentMode = .scaleAspectFit
-        chevron.snp.makeConstraints { $0.size.equalTo(18) }
-
+        let accessory = makeAccessory(isCompleted: isCompleted)
         iconBg.addSubview(emoji)
         emoji.snp.makeConstraints { $0.center.equalToSuperview() }
-
-        [iconBg, textStack, chevron].forEach { row.addSubview($0) }
-
-        iconBg.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(52)
-        }
-
-        textStack.snp.makeConstraints {
-            $0.leading.equalTo(iconBg.snp.trailing).offset(14)
-            $0.top.bottom.equalToSuperview().inset(16)
-            $0.trailing.equalTo(chevron.snp.leading).offset(-12)
-        }
-
-        chevron.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-
-        row.snp.makeConstraints { $0.height.greaterThanOrEqualTo(124) }
-
+        [iconBg, textStack, accessory].forEach { row.addSubview($0) }
+        iconBg.snp.makeConstraints { $0.leading.equalToSuperview().inset(16); $0.centerY.equalToSuperview(); $0.size.equalTo(52) }
+        textStack.snp.makeConstraints { $0.leading.equalTo(iconBg.snp.trailing).offset(14); $0.top.bottom.equalToSuperview().inset(16); $0.trailing.equalTo(accessory.snp.leading).offset(-12) }
+        accessory.snp.makeConstraints { $0.trailing.equalToSuperview().inset(16); $0.centerY.equalToSuperview() }
+        row.snp.makeConstraints { $0.height.greaterThanOrEqualTo(100) }
         return row
     }
 
-    func makeStreakKeeperCard() -> UIView {
+    func makeStreakKeeperCard(isCompleted: Bool) -> UIView {
         let row = UIView()
         cardContainerShadow(row)
 
@@ -539,54 +512,42 @@ private extension ChallengesView {
         desc.numberOfLines = 2
 
         let xp = xpRow(icon: "bolt.fill", text: "+100 XP", tint: UIColor(hex: "ef4444"))
-
         let textStack = UIStackView(arrangedSubviews: [titleRow, desc, xp])
         textStack.axis = .vertical
         textStack.spacing = 8
 
-        let doneBtn = UIView()
-        doneBtn.backgroundColor = UIColor(hex: "dcfce7")
-        doneBtn.layer.cornerRadius = 10
-
-        let check = UIImageView(image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysTemplate))
-        check.tintColor = UIColor(hex: "16a34a")
-        check.contentMode = .scaleAspectFit
-        doneBtn.addSubview(check)
-
-        iconBg.addSubview(emoji)
-        emoji.snp.makeConstraints { $0.center.equalToSuperview() }
-
         streakDot.snp.makeConstraints { $0.size.equalTo(16) }
 
-        check.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.size.equalTo(18)
-        }
-
-        doneBtn.snp.makeConstraints { $0.size.equalTo(32) }
-
-        [iconBg, textStack, doneBtn].forEach { row.addSubview($0) }
-
-        iconBg.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(52)
-        }
-
-        textStack.snp.makeConstraints {
-            $0.leading.equalTo(iconBg.snp.trailing).offset(14)
-            $0.top.bottom.equalToSuperview().inset(16)
-            $0.trailing.equalTo(doneBtn.snp.leading).offset(-12)
-        }
-
-        doneBtn.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-
-        row.snp.makeConstraints { $0.height.greaterThanOrEqualTo(124) }
-
+        let accessory = makeAccessory(isCompleted: isCompleted)
+        iconBg.addSubview(emoji)
+        emoji.snp.makeConstraints { $0.center.equalToSuperview() }
+        [iconBg, textStack, accessory].forEach { row.addSubview($0) }
+        iconBg.snp.makeConstraints { $0.leading.equalToSuperview().inset(16); $0.centerY.equalToSuperview(); $0.size.equalTo(52) }
+        textStack.snp.makeConstraints { $0.leading.equalTo(iconBg.snp.trailing).offset(14); $0.top.bottom.equalToSuperview().inset(16); $0.trailing.equalTo(accessory.snp.leading).offset(-12) }
+        accessory.snp.makeConstraints { $0.trailing.equalToSuperview().inset(16); $0.centerY.equalToSuperview() }
+        row.snp.makeConstraints { $0.height.greaterThanOrEqualTo(100) }
         return row
+    }
+
+    func makeAccessory(isCompleted: Bool) -> UIView {
+        if isCompleted {
+            let wrap = UIView()
+            wrap.backgroundColor = UIColor(hex: "dcfce7")
+            wrap.layer.cornerRadius = 10
+            let check = UIImageView(image: UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysTemplate))
+            check.tintColor = UIColor(hex: "16a34a")
+            check.contentMode = .scaleAspectFit
+            wrap.addSubview(check)
+            check.snp.makeConstraints { $0.center.equalToSuperview(); $0.size.equalTo(16) }
+            wrap.snp.makeConstraints { $0.size.equalTo(32) }
+            return wrap
+        } else {
+            let iv = UIImageView(image: UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate))
+            iv.tintColor = UIColor(hex: "cbd5e1")
+            iv.contentMode = .scaleAspectFit
+            iv.snp.makeConstraints { $0.size.equalTo(18) }
+            return iv
+        }
     }
 
     func xpRow(icon: String, text: String, tint: UIColor) -> UIView {

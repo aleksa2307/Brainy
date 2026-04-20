@@ -13,6 +13,13 @@ final class ProfileViewController: UIViewController {
         profileView.settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let user = AuthManager.shared.currentUser {
+            profileView.configure(user: user, stats: StatsManager.shared.stats)
+        }
+    }
+
     override func loadView() {
         view = ProfileView()
     }

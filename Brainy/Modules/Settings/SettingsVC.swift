@@ -36,11 +36,19 @@ private extension SettingsViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    func showLogin() {
+        let vc = SplashVC()
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        view.window?.rootViewController = vc
+    }
+
     @objc func logOutTapped() {
         let alert = UIAlertController(title: "Log Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Log Out", style: .destructive) { _ in
-            
+        alert.addAction(UIAlertAction(title: "Log Out", style: .destructive) { [weak self] _ in
+            AuthManager.shared.logout()
+            self?.showLogin()
         })
         present(alert, animated: true)
     }

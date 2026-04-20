@@ -55,10 +55,15 @@ final class ProfileView: UIView {
 
     private let statsTitleLabel = UILabel()
     private let statsGridView = UIView()
-
+    private let quizzesValueLabel = UILabel()
+    private let accuracyValueLabel = UILabel()
+    private let categoryValueLabel = UILabel()
+    private let timeValueLabel = UILabel()
 
     private let badgesTitleLabel = UILabel()
     private let badgesCard = UIView()
+    private let badgesRow1 = UIStackView()
+    private let badgesRow2 = UIStackView()
 
     private let quizzesTitleLabel = UILabel()
     private let quizzesCard = UIView()
@@ -74,6 +79,36 @@ final class ProfileView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(user: User, stats: UserStats) {
+        // User card
+        initialsLabel.text = user.initials
+        nameLabel.text = user.name
+        usernameLabel.text = user.username
+        levelBadgeLabel.text = "\(stats.level)"
+        levelFromLabel.text = "Level \(stats.level)"
+        levelToLabel.text = "Level \(stats.level + 1)"
+        streakLabel.text = "🔥  \(stats.currentStreak) day streak"
+        xpLabel.text = "⚡  \(stats.formattedXP) XP"
+        xpToNextLabel.text = stats.formattedXPToNext
+        let progress = max(CGFloat(stats.levelProgress), 0.02)
+        progressBarFill.snp.remakeConstraints {
+            $0.leading.top.bottom.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(progress)
+        }
+
+        // Stats grid
+        quizzesValueLabel.text = "\(stats.quizzesPlayed)"
+        accuracyValueLabel.text = "\(stats.accuracyPercent)%"
+        categoryValueLabel.text = stats.favCategory
+        timeValueLabel.text = stats.avgAnswerTimeString
+
+        // Badges
+        updateBadgesDisplay(StatsManager.shared.allBadges())
+
+        // Recent quizzes
+        updateRecentQuizzes(stats.recentQuizzes)
     }
 }
 
@@ -193,11 +228,16 @@ private extension ProfileView {
         statsTitleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         statsTitleLabel.textColor = UIColor(hex: "0f172a")
 
+        quizzesValueLabel.text  = "0"
+        accuracyValueLabel.text = "0%"
+        categoryValueLabel.text = "–"
+        timeValueLabel.text     = "–"
+
         let cards = [
-            makeStatCard(emoji: "🎯", value: "47",       label: "Quizzes Played", valueColor: UIColor(hex: "4f46e5"), bgColor: UIColor(hex: "eef2ff")),
-            makeStatCard(emoji: "🎯", value: "78%",      label: "Accuracy Rate",  valueColor: UIColor(hex: "22c55e"), bgColor: UIColor(hex: "dcfce7")),
-            makeStatCard(emoji: "⭐",  value: "Science",  label: "Fav. Category",  valueColor: UIColor(hex: "f59e0b"), bgColor: UIColor(hex: "fef3c7")),
-            makeStatCard(emoji: "⚡",  value: "8.3s",     label: "Avg. Answer",    valueColor: UIColor(hex: "06b6d4"), bgColor: UIColor(hex: "cffafe"))
+            makeStatCard(emoji: "🎯", valueLabel: quizzesValueLabel,  label: "Quizzes Played", valueColor: UIColor(hex: "4f46e5"), bgColor: UIColor(hex: "eef2ff")),
+            makeStatCard(emoji: "🎯", valueLabel: accuracyValueLabel, label: "Accuracy Rate",  valueColor: UIColor(hex: "22c55e"), bgColor: UIColor(hex: "dcfce7")),
+            makeStatCard(emoji: "⭐",  valueLabel: categoryValueLabel, label: "Fav. Category",  valueColor: UIColor(hex: "f59e0b"), bgColor: UIColor(hex: "fef3c7")),
+            makeStatCard(emoji: "⚡",  valueLabel: timeValueLabel,     label: "Avg. Answer",    valueColor: UIColor(hex: "06b6d4"), bgColor: UIColor(hex: "cffafe"))
         ]
 
         cards.forEach { statsGridView.addSubview($0) }
@@ -224,7 +264,7 @@ private extension ProfileView {
         }
     }
 
-    func makeStatCard(emoji: String, value: String, label: String, valueColor: UIColor, bgColor: UIColor) -> UIView {
+    func makeStatCard(emoji: String, valueLabel: UILabel, label: String, valueColor: UIColor, bgColor: UIColor) -> UIView {
         let card = UIView()
         card.backgroundColor = .white
         card.layer.cornerRadius = 20
@@ -241,8 +281,6 @@ private extension ProfileView {
         emojiLabel.text = emoji
         emojiLabel.font = .systemFont(ofSize: 20)
 
-        let valueLabel = UILabel()
-        valueLabel.text = value
         valueLabel.font = .systemFont(ofSize: 20, weight: .heavy)
         valueLabel.textColor = valueColor
 
@@ -276,6 +314,12 @@ private extension ProfileView {
         badgesTitleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         badgesTitleLabel.textColor = UIColor(hex: "0f172a")
 
+        [badgesRow1, badgesRow2].forEach {
+            $0.axis = .horizontal
+            $0.distribution = .fillEqually
+            $0.alignment = .fill
+        }
+
         badgesCard.backgroundColor = .white
         badgesCard.layer.cornerRadius = 20
         badgesCard.layer.shadowColor = UIColor.black.cgColor
@@ -283,40 +327,24 @@ private extension ProfileView {
         badgesCard.layer.shadowOffset = CGSize(width: 0, height: 2)
         badgesCard.layer.shadowRadius = 6
 
-        let row1 = makeHorizontalBadgeRow(badges: [
-            makeBadgeItem(emoji: "🌍", title: "Explorer",    isLocked: false),
-            makeBadgeItem(emoji: "🔬", title: "Scientist",   isLocked: false),
-            makeBadgeItem(emoji: "🎬", title: "Film Buff",   isLocked: false),
-            makeBadgeItem(emoji: "🎵", title: "Music Lover", isLocked: false)
-        ])
-        let row2 = makeHorizontalBadgeRow(badges: [
-            makeBadgeItem(emoji: "⚡",  title: "Speed Runner",  isLocked: false),
-            makeBadgeItem(emoji: "⭐",  title: "Perfect Score", isLocked: true),
-            makeBadgeItem(emoji: "🚀",  title: "Astronaut",     isLocked: true),
-            makeBadgeItem(emoji: "🗣️", title: "Polyglot",      isLocked: true)
-        ])
+        badgesCard.addSubview(badgesRow1)
+        badgesCard.addSubview(badgesRow2)
 
-        badgesCard.addSubview(row1)
-        badgesCard.addSubview(row2)
-
-        row1.snp.makeConstraints {
+        badgesRow1.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(80)
         }
-        row2.snp.makeConstraints {
-            $0.top.equalTo(row1.snp.bottom).offset(12)
+        badgesRow2.snp.makeConstraints {
+            $0.top.equalTo(badgesRow1.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(80)
             $0.bottom.equalToSuperview().inset(16)
         }
-    }
 
-    func makeHorizontalBadgeRow(badges: [UIView]) -> UIStackView {
-        let stack = UIStackView(arrangedSubviews: badges)
-        stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        stack.alignment = .fill
-        return stack
+        // Populate with all-locked defaults
+        updateBadgesDisplay(StatsManager.badgeDefinitions.map {
+            BadgeInfo(id: $0.id, emoji: $0.emoji, name: $0.name, isUnlocked: false)
+        })
     }
 
     func makeBadgeItem(emoji: String, title: String, isLocked: Bool) -> UIView {
@@ -379,36 +407,47 @@ private extension ProfileView {
         quizzesCard.layer.shadowRadius = 4
         quizzesCard.clipsToBounds = false
 
-        let rows = [
-            makeQuizRow(
-                emoji: "🌍",
-                gradientColors: [UIColor(hex: "06b6d4"), UIColor(hex: "3b82f6")],
-                title: "World Capitals", date: "2 days ago",
-                score: "8/10", percent: "80%",
-                scoreColor: UIColor(hex: "22c55e"), isLast: false
-            ),
-            makeQuizRow(
-                emoji: "🎬",
-                gradientColors: [UIColor(hex: "a855f7"), UIColor(hex: "6366f1")],
-                title: "Cinema Classics", date: "4 days ago",
-                score: "9/10", percent: "90%",
-                scoreColor: UIColor(hex: "22c55e"), isLast: false
-            ),
-            makeQuizRow(
-                emoji: "🔬",
-                gradientColors: [UIColor(hex: "22c55e"), UIColor(hex: "059669")],
-                title: "Science Fundamentals", date: "1 week ago",
-                score: "7/10", percent: "70%",
-                scoreColor: UIColor(hex: "f59e0b"), isLast: false
-            ),
-            makeQuizRow(
-                emoji: "🎵",
-                gradientColors: [UIColor(hex: "ec4899"), UIColor(hex: "f43f5e")],
-                title: "Music Legends", date: "1 week ago",
-                score: "7/10", percent: "70%",
-                scoreColor: UIColor(hex: "f59e0b"), isLast: true
+        let placeholder = UILabel()
+        placeholder.text = "Play quizzes to see your history here."
+        placeholder.font = .systemFont(ofSize: 14)
+        placeholder.textColor = UIColor(hex: "94a3b8")
+        placeholder.textAlignment = .center
+        placeholder.numberOfLines = 0
+        quizzesCard.addSubview(placeholder)
+        placeholder.snp.makeConstraints { $0.edges.equalToSuperview().inset(24) }
+    }
+
+    func updateRecentQuizzes(_ records: [QuizRecord]) {
+        quizzesCard.subviews.forEach { $0.removeFromSuperview() }
+
+        guard !records.isEmpty else {
+            let placeholder = UILabel()
+            placeholder.text = "Play quizzes to see your history here."
+            placeholder.font = .systemFont(ofSize: 14)
+            placeholder.textColor = UIColor(hex: "94a3b8")
+            placeholder.textAlignment = .center
+            placeholder.numberOfLines = 0
+            quizzesCard.addSubview(placeholder)
+            placeholder.snp.makeConstraints { $0.edges.equalToSuperview().inset(24) }
+            return
+        }
+
+        let items = Array(records.prefix(5))
+        let rows = items.enumerated().map { (i, record) -> UIView in
+            let isLast = i == items.count - 1
+            let colors = emojiGradient(record.emoji)
+            let scoreColor = record.accuracy >= 80 ? UIColor(hex: "22c55e") : UIColor(hex: "f59e0b")
+            return makeQuizRow(
+                emoji: record.emoji,
+                gradientColors: colors,
+                title: record.title,
+                date: relativeDateString(record.date),
+                score: "\(record.score)/\(record.total)",
+                percent: "\(record.accuracy)%",
+                scoreColor: scoreColor,
+                isLast: isLast
             )
-        ]
+        }
 
         var prev: UIView? = nil
         rows.forEach { row in
@@ -416,18 +455,44 @@ private extension ProfileView {
             row.snp.makeConstraints {
                 $0.leading.trailing.equalToSuperview()
                 $0.height.equalTo(76)
-                if let p = prev {
-                    $0.top.equalTo(p.snp.bottom)
-                } else {
-                    $0.top.equalToSuperview()
-                }
+                if let p = prev { $0.top.equalTo(p.snp.bottom) } else { $0.top.equalToSuperview() }
             }
             prev = row
         }
-        if let last = rows.last {
-            last.snp.makeConstraints { $0.bottom.equalToSuperview() }
+        rows.last?.snp.makeConstraints { $0.bottom.equalToSuperview() }
+    }
+
+    func updateBadgesDisplay(_ badges: [BadgeInfo]) {
+        badgesRow1.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        badgesRow2.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        badges.prefix(4).forEach { b in
+            badgesRow1.addArrangedSubview(makeBadgeItem(emoji: b.emoji, title: b.name, isLocked: !b.isUnlocked))
+        }
+        badges.dropFirst(4).prefix(4).forEach { b in
+            badgesRow2.addArrangedSubview(makeBadgeItem(emoji: b.emoji, title: b.name, isLocked: !b.isUnlocked))
         }
     }
+
+    func relativeDateString(_ date: Date) -> String {
+        let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day ?? 0
+        switch days {
+        case 0:  return "Today"
+        case 1:  return "Yesterday"
+        default: return "\(days) days ago"
+        }
+    }
+
+    func emojiGradient(_ emoji: String) -> [UIColor] {
+        switch emoji {
+        case "🌍": return [UIColor(hex: "06b6d4"), UIColor(hex: "3b82f6")]
+        case "🎬": return [UIColor(hex: "a855f7"), UIColor(hex: "6366f1")]
+        case "🔬": return [UIColor(hex: "22c55e"), UIColor(hex: "059669")]
+        case "🎵": return [UIColor(hex: "ec4899"), UIColor(hex: "f43f5e")]
+        case "🏛️": return [UIColor(hex: "f59e0b"), UIColor(hex: "d97706")]
+        default:   return [UIColor(hex: "4f46e5"), UIColor(hex: "7c3aed")]
+        }
+    }
+
 
     func makeQuizRow(emoji: String, gradientColors: [UIColor], title: String, date: String, score: String, percent: String, scoreColor: UIColor, isLast: Bool) -> UIView {
         let row = UIView()

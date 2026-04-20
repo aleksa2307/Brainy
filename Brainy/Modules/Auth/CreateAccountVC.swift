@@ -2,6 +2,8 @@ import UIKit
 
 final class CreateAccountVC: UIViewController {
 
+    var hidesBackButton = false
+
     private var createView: CreateAccountView { view as! CreateAccountView }
 
     override func loadView() {
@@ -10,12 +12,10 @@ final class CreateAccountVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        createView.backButton.isHidden = hidesBackButton
         createView.onBack = { [weak self] in self?.dismiss(animated: true) }
         createView.onCreate = { [weak self] in self?.handleCreate() }
-        createView.onLogIn = { [weak self] in self?.dismiss(animated: true) }
-        createView.onApple = { [weak self] in self?.handleAppleSignUp() }
-        createView.onGoogle = { [weak self] in self?.handleGoogleSignUp() }
-
+        createView.onLogIn = { [weak self] in self?.showLogin() }
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
@@ -32,15 +32,20 @@ private extension CreateAccountVC {
             showAlert(message: "Please fill in all fields.")
             return
         }
-        showMainApp()
+
+        switch AuthManager.shared.register(name: name, email: email, password: password) {
+        case .success:
+            showMainApp()
+        case .failure(let error):
+            showAlert(message: error.message)
+        }
     }
 
-    func handleAppleSignUp() {
-        showMainApp()
-    }
-
-    func handleGoogleSignUp() {
-        showMainApp()
+    func showLogin() {
+        let vc = LoginVC()
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
 
     func showMainApp() {

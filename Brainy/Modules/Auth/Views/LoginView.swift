@@ -4,8 +4,6 @@ import SnapKit
 final class LoginView: UIView {
 
     var onBack: (() -> Void)?
-    var onApple: (() -> Void)?
-    var onGoogle: (() -> Void)?
     var onLogin: (() -> Void)?
     var onForgotPassword: (() -> Void)?
     var onSignUp: (() -> Void)?
@@ -14,13 +12,6 @@ final class LoginView: UIView {
 
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-
-    private let appleButton = UIButton()
-    private let googleButton = UIButton()
-
-    private let dividerLeft = UIView()
-    private let dividerRight = UIView()
-    private let dividerLabel = UILabel()
 
     private let emailLabel = UILabel()
     private let emailContainer = UIView()
@@ -38,7 +29,6 @@ final class LoginView: UIView {
     private let loginButton = UIButton()
     private let loginGradient = CAGradientLayer()
 
-    private let bottomContainer = UIView()
     private let noAccountLabel = UILabel()
     private let signUpButton = UIButton(type: .system)
 
@@ -63,8 +53,6 @@ private extension LoginView {
 
         setupBackButton()
         setupTitleArea()
-        setupSocialButtons()
-        setupDivider()
         setupEmailField()
         setupPasswordField()
         setupForgotButton()
@@ -95,40 +83,6 @@ private extension LoginView {
         subtitleLabel.text = "Sign in to continue your journey"
         subtitleLabel.font = .systemFont(ofSize: 16, weight: .regular)
         subtitleLabel.textColor = UIColor(hex: "64748b")
-    }
-
-    func setupSocialButtons() {
-        appleButton.backgroundColor = UIColor(hex: "0f172a")
-        appleButton.layer.cornerRadius = 16
-        appleButton.setAttributedTitle(makeSocialTitle(emoji: "🍎", text: "Continue with Apple", color: .white), for: .normal)
-        appleButton.addTarget(self, action: #selector(appleTapped), for: .touchUpInside)
-
-        googleButton.backgroundColor = .white
-        googleButton.layer.cornerRadius = 16
-        googleButton.layer.borderWidth = 1.5
-        googleButton.layer.borderColor = UIColor(hex: "e2e8f0").cgColor
-        googleButton.setAttributedTitle(makeSocialTitle(emoji: "🌐", text: "Continue with Google", color: UIColor(hex: "0f172a")), for: .normal)
-        googleButton.addTarget(self, action: #selector(googleTapped), for: .touchUpInside)
-    }
-
-    func makeSocialTitle(emoji: String, text: String, color: UIColor) -> NSAttributedString {
-        let full = NSMutableAttributedString(
-            string: "\(emoji)  \(text)",
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 16, weight: .semibold),
-                .foregroundColor: color
-            ]
-        )
-        return full
-    }
-
-    func setupDivider() {
-        dividerLeft.backgroundColor = UIColor(hex: "e2e8f0")
-        dividerRight.backgroundColor = UIColor(hex: "e2e8f0")
-
-        dividerLabel.text = "or continue with email"
-        dividerLabel.font = .systemFont(ofSize: 14)
-        dividerLabel.textColor = UIColor(hex: "94a3b8")
     }
 
     func setupEmailField() {
@@ -236,8 +190,6 @@ private extension LoginView {
 
     func setupConstraints() {
         [backButton, titleLabel, subtitleLabel,
-         appleButton, googleButton,
-         dividerLeft, dividerLabel, dividerRight,
          emailLabel, emailContainer,
          passwordLabel, passwordContainer,
          forgotButton, loginButton,
@@ -262,39 +214,8 @@ private extension LoginView {
             $0.leading.trailing.equalToSuperview().inset(24)
         }
 
-        appleButton.snp.makeConstraints {
-            $0.top.equalTo(subtitleLabel.snp.bottom).offset(32)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(52)
-        }
-
-        googleButton.snp.makeConstraints {
-            $0.top.equalTo(appleButton.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(52)
-        }
-
-        dividerLabel.snp.makeConstraints {
-            $0.top.equalTo(googleButton.snp.bottom).offset(28)
-            $0.centerX.equalToSuperview()
-        }
-
-        dividerLeft.snp.makeConstraints {
-            $0.centerY.equalTo(dividerLabel)
-            $0.leading.equalToSuperview().inset(24)
-            $0.trailing.equalTo(dividerLabel.snp.leading).offset(-12)
-            $0.height.equalTo(1)
-        }
-
-        dividerRight.snp.makeConstraints {
-            $0.centerY.equalTo(dividerLabel)
-            $0.leading.equalTo(dividerLabel.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview().inset(24)
-            $0.height.equalTo(1)
-        }
-
         emailLabel.snp.makeConstraints {
-            $0.top.equalTo(dividerLabel.snp.bottom).offset(24)
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
 
@@ -371,8 +292,6 @@ private extension LoginView {
 private extension LoginView {
 
     @objc func backTapped() { onBack?() }
-    @objc func appleTapped() { onApple?() }
-    @objc func googleTapped() { onGoogle?() }
     @objc func loginTapped() { onLogin?() }
     @objc func forgotTapped() { onForgotPassword?() }
     @objc func signUpTapped() { onSignUp?() }

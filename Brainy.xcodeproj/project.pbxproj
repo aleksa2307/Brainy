@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB1000102F970000009AD000 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1000002F970000009AD000 /* User.swift */; };
+		BB2000102F970000009AD000 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2000002F970000009AD000 /* AuthManager.swift */; };
+		BB3000102F970000009AD000 /* StatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3000002F970000009AD000 /* StatsManager.swift */; };
 		AA1000102F958000009AD000 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1000002F958000009AD000 /* UIColor+Extensions.swift */; };
 		AA2000102F958000009AD000 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2000002F958000009AD000 /* SplashVC.swift */; };
 		AA2000202F958000009AD000 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2000012F958000009AD000 /* SplashView.swift */; };
@@ -95,6 +98,9 @@
 		FA1003002F970000009AD000 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		FA1004002F970000009AD000 /* CreateAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountVC.swift; sourceTree = "<group>"; };
 		FA1005002F970000009AD000 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
+		BB1000002F970000009AD000 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BB2000002F970000009AD000 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		BB3000002F970000009AD000 /* StatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,11 +264,22 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		BB0000002F970000009AD000 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BB1000002F970000009AD000 /* User.swift */,
+				BB2000002F970000009AD000 /* AuthManager.swift */,
+				BB3000002F970000009AD000 /* StatsManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		ED3397AC2F957F60009AD000 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				ED3397AE2F957F6D009AD000 /* Controllers */,
 				ED3397AD2F957F67009AD000 /* UI */,
+				BB0000002F970000009AD000 /* Services */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -546,6 +563,9 @@
 				FA1003102F970000009AD000 /* LoginView.swift in Sources */,
 				FA1004102F970000009AD000 /* CreateAccountVC.swift in Sources */,
 				FA1005102F970000009AD000 /* CreateAccountView.swift in Sources */,
+				BB1000102F970000009AD000 /* User.swift in Sources */,
+				BB2000102F970000009AD000 /* AuthManager.swift in Sources */,
+				BB3000102F970000009AD000 /* StatsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

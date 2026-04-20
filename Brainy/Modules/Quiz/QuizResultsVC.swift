@@ -11,6 +11,15 @@ final class QuizResultsViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
+        StatsManager.shared.recordQuiz(
+            title: viewModel.meta.title,
+            emoji: viewModel.meta.emoji,
+            category: viewModel.meta.category,
+            score: viewModel.correctCount,
+            total: viewModel.totalQuestions,
+            xpEarned: viewModel.xp,
+            timeTaken: viewModel.totalElapsed
+        )
     }
 
     required init?(coder: NSCoder) { fatalError() }
