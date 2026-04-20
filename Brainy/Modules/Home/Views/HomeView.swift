@@ -146,10 +146,6 @@ private extension HomeView {
 
         bellButton.backgroundColor = .white
         bellButton.layer.cornerRadius = 14
-        bellButton.layer.shadowColor = UIColor.black.cgColor
-        bellButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        bellButton.layer.shadowRadius = 8
-        bellButton.layer.shadowOpacity = 0.08
         bellButton.setImage(UIImage(systemName: "bell")?.withRenderingMode(.alwaysTemplate), for: .normal)
         bellButton.tintColor = UIColor(hex: "0f172a")
 
@@ -294,10 +290,6 @@ private extension HomeView {
         if isSelected {
             button.backgroundColor = UIColor(hex: "4f46e5")
             button.configuration?.baseForegroundColor = .white
-            button.layer.shadowColor = UIColor(hex: "4f46e5").cgColor
-            button.layer.shadowOffset = CGSize(width: 0, height: 4)
-            button.layer.shadowRadius = 12
-            button.layer.shadowOpacity = 0.3
         } else {
             button.backgroundColor = .white
             button.configuration?.baseForegroundColor = UIColor(hex: "64748b")
@@ -355,10 +347,6 @@ private extension HomeView {
         let card = UIView()
         card.backgroundColor = .white
         card.layer.cornerRadius = 24
-        card.layer.shadowColor = UIColor.black.cgColor
-        card.layer.shadowOffset = CGSize(width: 0, height: 4)
-        card.layer.shadowRadius = 20
-        card.layer.shadowOpacity = 0.1
 
         let imageArea = GradientView(colors: colors)
         imageArea.layer.cornerRadius = 24
