@@ -54,7 +54,7 @@ private extension ExploreView {
         contentStack.axis = .vertical
         contentStack.spacing = 16
         contentStack.alignment = .fill
-
+        
         titleLabel.text = "Explore"
         titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
         titleLabel.textColor = UIColor(hex: "0f172a")
@@ -110,9 +110,11 @@ private extension ExploreView {
     func setupConstraints() {
         addSubview(scrollView)
         scrollView.addSubview(contentStack)
+        scrollView.addSubview(categoryScroll)
 
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(safeAreaLayoutGuide)
+            $0.top.bottom.equalToSuperview()
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
         }
         contentStack.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -123,27 +125,27 @@ private extension ExploreView {
         contentStack.setCustomSpacing(16, after: titleLabel)
 
         contentStack.addArrangedSubview(searchField)
+        // 16 (gap above) + 44 (category scroll height) + 12 (gap below) = 72
+        contentStack.setCustomSpacing(72, after: searchField)
 
-        contentStack.setCustomSpacing(16, after: searchField)
-        contentStack.addArrangedSubview(categoryScroll)
-        categoryScroll.snp.makeConstraints { $0.height.equalTo(38) }
-        categoryScroll.addSubview(categoryStack)
-        categoryStack.snp.makeConstraints {
-            $0.leading.equalTo(categoryScroll.contentLayoutGuide.snp.leading).offset(24)
-            $0.trailing.equalTo(categoryScroll.contentLayoutGuide.snp.trailing).offset(-24)
-            $0.top.equalTo(categoryScroll.contentLayoutGuide.snp.top)
-            $0.bottom.equalTo(categoryScroll.contentLayoutGuide.snp.bottom).offset(-4)
-            $0.height.equalTo(34)
-        }
-
-        contentStack.setCustomSpacing(12, after: categoryScroll)
         contentStack.addArrangedSubview(resultsLabel)
-
         contentStack.setCustomSpacing(12, after: resultsLabel)
         contentStack.addArrangedSubview(cardsStack)
 
         contentStack.layoutMargins = UIEdgeInsets(top: 12, left: 24, bottom: 24, right: 24)
         contentStack.isLayoutMarginsRelativeArrangement = true
+
+        categoryScroll.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        categoryScroll.addSubview(categoryStack)
+        categoryScroll.snp.makeConstraints {
+            $0.top.equalTo(searchField.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
+        }
+        categoryStack.snp.makeConstraints {
+            $0.edges.equalTo(categoryScroll.contentLayoutGuide)
+            $0.height.equalTo(36)
+        }
     }
 
     func rebuildCategoryChips() {
@@ -153,11 +155,18 @@ private extension ExploreView {
 
         for (index, title) in viewModel.categories.enumerated() {
             let button = UIButton(type: .system)
-            button.setTitle(title, for: .normal)
-            button.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
-            button.layer.cornerRadius = 10
+            var config = UIButton.Configuration.plain()
+            config.title = title
+            config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
+            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attrs in
+                var updated = attrs
+                updated.font = .systemFont(ofSize: 14, weight: .semibold)
+                return updated
+            }
+            button.configuration = config
+            button.layer.cornerRadius = 12
             button.tag = index
-            button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 14, bottom: 6, right: 14)
+            button.snp.makeConstraints { $0.height.equalTo(36) }
             button.addTarget(self, action: #selector(categoryTapped(_:)), for: .touchUpInside)
             categoryStack.addArrangedSubview(button)
             categoryButtons.append(button)
@@ -175,11 +184,11 @@ private extension ExploreView {
             let selected = i == selectedIndex
             if selected {
                 button.backgroundColor = UIColor(hex: "4f46e5")
-                button.setTitleColor(.white, for: .normal)
+                button.configuration?.baseForegroundColor = .white
                 button.layer.borderWidth = 0
             } else {
                 button.backgroundColor = .white
-                button.setTitleColor(UIColor(hex: "64748b"), for: .normal)
+                button.configuration?.baseForegroundColor = UIColor(hex: "64748b")
                 button.layer.borderWidth = 1.5
                 button.layer.borderColor = UIColor(hex: "e2e8f0").cgColor
             }

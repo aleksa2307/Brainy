@@ -71,6 +71,7 @@ final class ExploreQuizCardView: UIView {
         setupUI()
         setupConstraints()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        favoriteButton.isHidden = true
         addGestureRecognizer(tap)
     }
 
@@ -167,7 +168,7 @@ final class ExploreQuizCardView: UIView {
 
         card.addSubview(rowStack)
         rowStack.snp.makeConstraints {
-            $0.top.equalTo(topBar.snp.bottom)
+            $0.top.equalTo(topBar.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(16)
         }
@@ -220,7 +221,7 @@ final class ExploreQuizCardView: UIView {
             metaChip(icon: "star.fill", text: item.rating, iconTint: UIColor(hex: "eab308"), textWeight: .semibold)
         )
         metaRow.addArrangedSubview(
-            metaChip(icon: "clock", text: item.duration, iconTint: UIColor(hex: "94a3b8"), textWeight: .regular)
+            metaChip(icon: "clock", text: item.duration.replacingOccurrences(of: " ", with: "\n"), iconTint: UIColor(hex: "94a3b8"), textWeight: .regular, multiline: true)
         )
         metaRow.addArrangedSubview(
             metaChip(icon: "person.2.fill", text: item.participants, iconTint: UIColor(hex: "94a3b8"), textWeight: .regular)
@@ -237,7 +238,7 @@ final class ExploreQuizCardView: UIView {
         metaRow.addArrangedSubview(diff)
     }
 
-    private func metaChip(icon: String, text: String, iconTint: UIColor, textWeight: UIFont.Weight) -> UIView {
+    private func metaChip(icon: String, text: String, iconTint: UIColor, textWeight: UIFont.Weight, multiline: Bool = false) -> UIView {
         let wrap = UIStackView()
         wrap.axis = .horizontal
         wrap.spacing = 4
@@ -252,6 +253,10 @@ final class ExploreQuizCardView: UIView {
         lab.text = text
         lab.font = .systemFont(ofSize: 12, weight: textWeight)
         lab.textColor = UIColor(hex: "64748b")
+        if multiline {
+            lab.numberOfLines = 0
+            lab.textAlignment = .center
+        }
 
         wrap.addArrangedSubview(iv)
         wrap.addArrangedSubview(lab)

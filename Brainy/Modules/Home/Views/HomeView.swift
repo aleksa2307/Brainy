@@ -65,10 +65,6 @@ final class HomeView: UIView {
     private let challengeStarIcon = UIImageView()
     private let challengeXPLabel = UILabel()
 
-    private let categoriesHeaderLabel = UILabel()
-    private let categoriesScrollView = UIScrollView()
-    private let categoriesStack = UIStackView()
-
     private let popularHeaderLabel = UILabel()
     private let seeAllButton = UIButton(type: .system)
     private let popularScrollView = UIScrollView()
@@ -110,7 +106,6 @@ private extension HomeView {
         setupHeader()
         setupContinueCard()
         setupDailyChallenge()
-        setupCategories()
         setupPopular()
     }
 
@@ -240,53 +235,6 @@ private extension HomeView {
          challengeTitleLabel, challengeSubtitleLabel, challengeXPContainer].forEach {
             challengeCard.addSubview($0)
         }
-    }
-
-    func setupCategories() {
-        categoriesHeaderLabel.text = "Categories"
-        categoriesHeaderLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        categoriesHeaderLabel.textColor = UIColor(hex: "0f172a")
-
-        categoriesScrollView.showsHorizontalScrollIndicator = false
-        categoriesScrollView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-
-        categoriesStack.axis = .horizontal
-        categoriesStack.spacing = 8
-        categoriesStack.alignment = .center
-
-        let categories = ["All", "History", "Science", "Movies", "Music", "Geography", "Sports", "IT", "Languages"]
-        categories.enumerated().forEach { index, name in
-            categoriesStack.addArrangedSubview(makeCategoryChip(title: name, isSelected: index == 0))
-        }
-
-        categoriesScrollView.addSubview(categoriesStack)
-    }
-
-    func makeCategoryChip(title: String, isSelected: Bool) -> UIButton {
-        let button = UIButton(type: .system)
-        var config = UIButton.Configuration.plain()
-        config.title = title
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
-        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attrs in
-            var updated = attrs
-            updated.font = .systemFont(ofSize: 14, weight: .semibold)
-            return updated
-        }
-        button.configuration = config
-        button.layer.cornerRadius = 12
-
-        if isSelected {
-            button.backgroundColor = UIColor(hex: "4f46e5")
-            button.configuration?.baseForegroundColor = .white
-        } else {
-            button.backgroundColor = .white
-            button.configuration?.baseForegroundColor = UIColor(hex: "64748b")
-            button.layer.borderWidth = 1.5
-            button.layer.borderColor = UIColor(hex: "e2e8f0").cgColor
-        }
-
-        button.snp.makeConstraints { $0.height.equalTo(36) }
-        return button
     }
 
     func setupPopular() {
@@ -454,7 +402,6 @@ private extension HomeView {
         [greetingLabel, titleLabel, streakBadge, bellButton,
          continueCard,
          challengeHeaderLabel, challengeTimerLabel, challengeCard,
-         categoriesHeaderLabel, categoriesScrollView,
          popularHeaderLabel, seeAllButton, popularScrollView].forEach {
             contentView.addSubview($0)
         }
@@ -467,7 +414,7 @@ private extension HomeView {
         }
 
         greetingLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(60)
+            $0.top.equalTo(contentView.safeTop)
             $0.leading.equalToSuperview().inset(24)
         }
 
@@ -626,24 +573,8 @@ private extension HomeView {
             $0.centerX.bottom.equalToSuperview()
         }
 
-        categoriesHeaderLabel.snp.makeConstraints {
-            $0.top.equalTo(challengeCard.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().inset(24)
-        }
-
-        categoriesScrollView.snp.makeConstraints {
-            $0.top.equalTo(categoriesHeaderLabel.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(44)
-        }
-
-        categoriesStack.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.height.equalTo(categoriesScrollView)
-        }
-
         popularHeaderLabel.snp.makeConstraints {
-            $0.top.equalTo(categoriesScrollView.snp.bottom).offset(24)
+            $0.top.equalTo(challengeCard.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
         }
 

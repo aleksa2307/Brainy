@@ -53,17 +53,6 @@ final class ChallengesView: UIView {
     private let dailyHeaderLabel = UILabel()
     private let dailyStack = UIStackView()
 
-    private let friendsHeaderLabel = UILabel()
-    private let friendsStack = UIStackView()
-
-    private let tournamentCard = UIView()
-    private let tournamentIconWrap = UIView()
-    private let tournamentLockIcon = UIImageView()
-    private let tournamentTitleLabel = UILabel()
-    private let tournamentSubtitleLabel = UILabel()
-    private let tournamentLevelBadge = UIView()
-    private let tournamentLevelLabel = UILabel()
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -184,42 +173,6 @@ private extension ChallengesView {
         dailyStack.alignment = .fill
         [makeSpeedRoundCard(isCompleted: false), makePerfectScoreCard(isCompleted: false), makeStreakKeeperCard(isCompleted: false)].forEach { dailyStack.addArrangedSubview($0) }
 
-        friendsHeaderLabel.text = "👥 Friend Challenges"
-        friendsHeaderLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        friendsHeaderLabel.textColor = UIColor(hex: "0f172a")
-
-        friendsStack.axis = .vertical
-        friendsStack.spacing = 12
-        [makeMarcusChallengeCard(), makeSofiaDuelCard()].forEach { friendsStack.addArrangedSubview($0) }
-
-        tournamentCard.backgroundColor = UIColor(hex: "f8fafc")
-        tournamentCard.layer.cornerRadius = 20
-        tournamentCard.layer.borderWidth = 1.5
-        tournamentCard.layer.borderColor = UIColor(hex: "cbd5e1").cgColor
-
-        tournamentIconWrap.backgroundColor = UIColor(hex: "f1f5f9")
-        tournamentIconWrap.layer.cornerRadius = 16
-
-        tournamentLockIcon.image = UIImage(systemName: "lock.fill")?.withRenderingMode(.alwaysTemplate)
-        tournamentLockIcon.tintColor = UIColor(hex: "94a3b8")
-        tournamentLockIcon.contentMode = .scaleAspectFit
-
-        tournamentTitleLabel.text = "Tournament Mode"
-        tournamentTitleLabel.font = .systemFont(ofSize: 15, weight: .bold)
-        tournamentTitleLabel.textColor = UIColor(hex: "94a3b8")
-
-        tournamentSubtitleLabel.text = "Reach Level 25 to unlock tournaments"
-        tournamentSubtitleLabel.font = .systemFont(ofSize: 13, weight: .regular)
-        tournamentSubtitleLabel.textColor = UIColor(hex: "cbd5e1")
-        tournamentSubtitleLabel.numberOfLines = 2
-
-        tournamentLevelBadge.backgroundColor = UIColor(hex: "eef2ff")
-        tournamentLevelBadge.layer.cornerRadius = 8
-
-        tournamentLevelLabel.text = "Lv.25"
-        tournamentLevelLabel.font = .systemFont(ofSize: 12, weight: .bold)
-        tournamentLevelLabel.textColor = UIColor(hex: "4f46e5")
-
         let daysRow = UIStackView(arrangedSubviews: [weeklyBrainLabel, weeklyDaysBadge])
         daysRow.axis = .horizontal
         daysRow.spacing = 8
@@ -259,9 +212,6 @@ private extension ChallengesView {
 
         [weeklyDecorationCircle, weeklyTopRow, weeklyProgressBlock].forEach { weeklyCard.addSubview($0) }
 
-        tournamentIconWrap.addSubview(tournamentLockIcon)
-        [tournamentIconWrap, tournamentTitleLabel, tournamentSubtitleLabel, tournamentLevelBadge].forEach { tournamentCard.addSubview($0) }
-        tournamentLevelBadge.addSubview(tournamentLevelLabel)
     }
 
     func setupConstraints() {
@@ -270,9 +220,7 @@ private extension ChallengesView {
 
         [titleLabel, subtitleLabel,
          weeklyHeaderLabel, weeklyCard,
-         dailyHeaderLabel, dailyStack,
-         friendsHeaderLabel, friendsStack,
-         tournamentCard].forEach { contentView.addSubview($0) }
+         dailyHeaderLabel, dailyStack].forEach { contentView.addSubview($0) }
 
         scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
@@ -282,7 +230,7 @@ private extension ChallengesView {
         }
 
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(60)
+            $0.top.equalTo(contentView.safeTop)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
 
@@ -334,57 +282,7 @@ private extension ChallengesView {
         dailyStack.snp.makeConstraints {
             $0.top.equalTo(dailyHeaderLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(24)
-        }
-
-        friendsHeaderLabel.snp.makeConstraints {
-            $0.top.equalTo(dailyStack.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview().inset(24)
-        }
-
-        friendsStack.snp.makeConstraints {
-            $0.top.equalTo(friendsHeaderLabel.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(24)
-        }
-
-        tournamentCard.snp.makeConstraints {
-            $0.top.equalTo(friendsStack.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalToSuperview().inset(24)
-            $0.height.greaterThanOrEqualTo(96)
-        }
-
-        tournamentIconWrap.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(17)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(52)
-        }
-
-        tournamentLockIcon.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.size.equalTo(22)
-        }
-
-        tournamentTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(18)
-            $0.leading.equalTo(tournamentIconWrap.snp.trailing).offset(14)
-            $0.trailing.lessThanOrEqualTo(tournamentLevelBadge.snp.leading).offset(-8)
-        }
-
-        tournamentSubtitleLabel.snp.makeConstraints {
-            $0.top.equalTo(tournamentTitleLabel.snp.bottom).offset(2)
-            $0.leading.equalTo(tournamentTitleLabel)
-            $0.trailing.lessThanOrEqualTo(tournamentLevelBadge.snp.leading).offset(-8)
-            $0.bottom.lessThanOrEqualToSuperview().inset(18)
-        }
-
-        tournamentLevelBadge.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(17)
-            $0.centerY.equalToSuperview()
-        }
-
-        tournamentLevelLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(10)
-            $0.top.bottom.equalToSuperview().inset(5)
         }
     }
 }
@@ -571,169 +469,4 @@ private extension ChallengesView {
         return stack
     }
 
-    func timeRow(text: String) -> UIView {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 4
-        stack.alignment = .center
-
-        let iv = UIImageView(image: UIImage(systemName: "clock")?.withRenderingMode(.alwaysTemplate))
-        iv.tintColor = UIColor(hex: "94a3b8")
-        iv.contentMode = .scaleAspectFit
-        iv.snp.makeConstraints { $0.size.equalTo(12) }
-
-        let label = UILabel()
-        label.text = text
-        label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = UIColor(hex: "94a3b8")
-
-        stack.addArrangedSubview(iv)
-        stack.addArrangedSubview(label)
-        return stack
-    }
-}
-
-private extension ChallengesView {
-
-    func makeMarcusChallengeCard() -> UIView {
-        let row = UIView()
-        cardContainerShadow(row)
-
-        let avatar = UIView()
-        avatar.backgroundColor = UIColor(hex: "06b6d4")
-        avatar.layer.cornerRadius = 14
-
-        let initials = UILabel()
-        initials.text = "ML"
-        initials.font = .systemFont(ofSize: 14, weight: .bold)
-        initials.textColor = .white
-        avatar.addSubview(initials)
-        initials.snp.makeConstraints { $0.center.equalToSuperview() }
-
-        let title = UILabel()
-        title.text = "Marcus challenged you!"
-        title.font = .systemFont(ofSize: 15, weight: .bold)
-        title.textColor = UIColor(hex: "0f172a")
-
-        let sub = UILabel()
-        sub.text = "🎬 Cinema Classics"
-        sub.font = .systemFont(ofSize: 13, weight: .regular)
-        sub.textColor = UIColor(hex: "64748b")
-
-        let textCol = UIStackView(arrangedSubviews: [title, sub])
-        textCol.axis = .vertical
-        textCol.spacing = 2
-
-        let play = UIButton(type: .system)
-        play.layer.cornerRadius = 10
-        play.clipsToBounds = true
-        var playConfig = UIButton.Configuration.plain()
-        playConfig.title = "Play"
-        playConfig.baseForegroundColor = .white
-        playConfig.background.backgroundColor = UIColor(hex: "4f46e5")
-        playConfig.background.cornerRadius = 10
-        playConfig.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
-        playConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var out = incoming
-            out.font = .systemFont(ofSize: 13, weight: .bold)
-            return out
-        }
-        play.configuration = playConfig
-
-        [avatar, textCol, play].forEach { row.addSubview($0) }
-
-        avatar.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(44)
-        }
-
-        textCol.snp.makeConstraints {
-            $0.leading.equalTo(avatar.snp.trailing).offset(14)
-            $0.centerY.equalToSuperview()
-            $0.trailing.lessThanOrEqualTo(play.snp.leading).offset(-8)
-        }
-
-        play.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-
-        row.snp.makeConstraints { $0.height.equalTo(76) }
-        return row
-    }
-
-    func makeSofiaDuelCard() -> UIView {
-        let row = UIView()
-        cardContainerShadow(row)
-
-        let avatar = UIView()
-        avatar.backgroundColor = UIColor(hex: "4f46e5")
-        avatar.layer.cornerRadius = 14
-
-        let initials = UILabel()
-        initials.text = "SC"
-        initials.font = .systemFont(ofSize: 14, weight: .bold)
-        initials.textColor = .white
-        avatar.addSubview(initials)
-        initials.snp.makeConstraints { $0.center.equalToSuperview() }
-
-        let title = UILabel()
-        title.text = "You vs Sofia"
-        title.font = .systemFont(ofSize: 15, weight: .bold)
-        title.textColor = UIColor(hex: "0f172a")
-
-        let sub = UILabel()
-        sub.text = "🌍 World Capitals"
-        sub.font = .systemFont(ofSize: 13, weight: .regular)
-        sub.textColor = UIColor(hex: "64748b")
-
-        let you = UILabel()
-        you.text = "You: 7/10"
-        you.font = .systemFont(ofSize: 12, weight: .bold)
-        you.textColor = UIColor(hex: "ef4444")
-
-        let vs = UILabel()
-        vs.text = "vs"
-        vs.font = .systemFont(ofSize: 12, weight: .regular)
-        vs.textColor = UIColor(hex: "94a3b8")
-
-        let them = UILabel()
-        them.text = "Sofia: 8/10"
-        them.font = .systemFont(ofSize: 12, weight: .bold)
-        them.textColor = UIColor(hex: "64748b")
-
-        let scoreRow = UIStackView(arrangedSubviews: [you, vs, them])
-        scoreRow.axis = .horizontal
-        scoreRow.spacing = 8
-
-        let textCol = UIStackView(arrangedSubviews: [title, sub, scoreRow])
-        textCol.axis = .vertical
-        textCol.spacing = 4
-
-        let emoji = UILabel()
-        emoji.text = "😤"
-        emoji.font = .systemFont(ofSize: 16)
-
-        [avatar, textCol, emoji].forEach { row.addSubview($0) }
-
-        avatar.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.top.equalToSuperview().inset(16)
-            $0.size.equalTo(44)
-        }
-
-        textCol.snp.makeConstraints {
-            $0.leading.equalTo(avatar.snp.trailing).offset(14)
-            $0.top.bottom.equalToSuperview().inset(16)
-            $0.trailing.equalTo(emoji.snp.leading).offset(-8)
-        }
-
-        emoji.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-
-        return row
-    }
 }

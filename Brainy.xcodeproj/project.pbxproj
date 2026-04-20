@@ -19,6 +19,12 @@
 		AA4000102F958000009AD000 /* OnboardingContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4000002F958000009AD000 /* OnboardingContainerVC.swift */; };
 		AA4000202F958000009AD000 /* OnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4000012F958000009AD000 /* OnboardingContainerView.swift */; };
 		CC0100102FA00000009AD000 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0100002FA00000009AD000 /* QuizQuestion.swift */; };
+		CC02A0102FA00000009AD000 /* ThemedQuizPools.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02A0002FA00000009AD000 /* ThemedQuizPools.swift */; };
+		CC02A0112FA00000009AD000 /* ThemedQuizPools+GeographyHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02A0012FA00000009AD000 /* ThemedQuizPools+GeographyHistory.swift */; };
+		CC02A0122FA00000009AD000 /* ThemedQuizPools+ScienceMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02A0022FA00000009AD000 /* ThemedQuizPools+ScienceMovies.swift */; };
+		CC02A0132FA00000009AD000 /* ThemedQuizPools+MusicSports.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02A0032FA00000009AD000 /* ThemedQuizPools+MusicSports.swift */; };
+		CC02A0142FA00000009AD000 /* ThemedQuizPools+ITLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02A0042FA00000009AD000 /* ThemedQuizPools+ITLanguages.swift */; };
+		CC02A0152FA00000009AD000 /* QuizThemedQuestionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02A0052FA00000009AD000 /* QuizThemedQuestionProvider.swift */; };
 		CC0100202FA00000009AD000 /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0100012FA00000009AD000 /* QuizViewModel.swift */; };
 		CC0100302FA00000009AD000 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0100022FA00000009AD000 /* QuizView.swift */; };
 		CC0100402FA00000009AD000 /* QuizResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0100032FA00000009AD000 /* QuizResultsView.swift */; };
@@ -46,6 +52,7 @@
 		ED3397E32F966299009AD000 /* RanksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3397E22F966299009AD000 /* RanksView.swift */; };
 		ED3397E62F9662A7009AD000 /* RanksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3397E52F9662A7009AD000 /* RanksVC.swift */; };
 		ED3398112F959400009AD000 /* ExploreQuizItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398012F959400009AD000 /* ExploreQuizItem.swift */; };
+		ED3398142F959400009AD000 /* ExploreQuizMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398042F959400009AD000 /* ExploreQuizMockData.swift */; };
 		ED3398122F959400009AD000 /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398022F959400009AD000 /* ExploreViewModel.swift */; };
 		ED3398132F959400009AD000 /* ExploreQuizCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3398032F959400009AD000 /* ExploreQuizCardView.swift */; };
 		FA1002102F970000009AD000 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1002002F970000009AD000 /* LoginVC.swift */; };
@@ -64,6 +71,12 @@
 		AA4000002F958000009AD000 /* OnboardingContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerVC.swift; sourceTree = "<group>"; };
 		AA4000012F958000009AD000 /* OnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerView.swift; sourceTree = "<group>"; };
 		CC0100002FA00000009AD000 /* QuizQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
+		CC02A0002FA00000009AD000 /* ThemedQuizPools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedQuizPools.swift; sourceTree = "<group>"; };
+		CC02A0012FA00000009AD000 /* ThemedQuizPools+GeographyHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemedQuizPools+GeographyHistory.swift"; sourceTree = "<group>"; };
+		CC02A0022FA00000009AD000 /* ThemedQuizPools+ScienceMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemedQuizPools+ScienceMovies.swift"; sourceTree = "<group>"; };
+		CC02A0032FA00000009AD000 /* ThemedQuizPools+MusicSports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemedQuizPools+MusicSports.swift"; sourceTree = "<group>"; };
+		CC02A0042FA00000009AD000 /* ThemedQuizPools+ITLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemedQuizPools+ITLanguages.swift"; sourceTree = "<group>"; };
+		CC02A0052FA00000009AD000 /* QuizThemedQuestionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizThemedQuestionProvider.swift; sourceTree = "<group>"; };
 		CC0100012FA00000009AD000 /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
 		CC0100022FA00000009AD000 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
 		CC0100032FA00000009AD000 /* QuizResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsView.swift; sourceTree = "<group>"; };
@@ -92,6 +105,7 @@
 		ED3397E22F966299009AD000 /* RanksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RanksView.swift; sourceTree = "<group>"; };
 		ED3397E52F9662A7009AD000 /* RanksVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RanksVC.swift; sourceTree = "<group>"; };
 		ED3398012F959400009AD000 /* ExploreQuizItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreQuizItem.swift; sourceTree = "<group>"; };
+		ED3398042F959400009AD000 /* ExploreQuizMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreQuizMockData.swift; sourceTree = "<group>"; };
 		ED3398022F959400009AD000 /* ExploreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
 		ED3398032F959400009AD000 /* ExploreQuizCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreQuizCardView.swift; sourceTree = "<group>"; };
 		FA1002002F970000009AD000 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
@@ -188,6 +202,12 @@
 			isa = PBXGroup;
 			children = (
 				CC0100002FA00000009AD000 /* QuizQuestion.swift */,
+				CC02A0002FA00000009AD000 /* ThemedQuizPools.swift */,
+				CC02A0012FA00000009AD000 /* ThemedQuizPools+GeographyHistory.swift */,
+				CC02A0022FA00000009AD000 /* ThemedQuizPools+ScienceMovies.swift */,
+				CC02A0032FA00000009AD000 /* ThemedQuizPools+MusicSports.swift */,
+				CC02A0042FA00000009AD000 /* ThemedQuizPools+ITLanguages.swift */,
+				CC02A0052FA00000009AD000 /* QuizThemedQuestionProvider.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -435,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				ED3398012F959400009AD000 /* ExploreQuizItem.swift */,
+				ED3398042F959400009AD000 /* ExploreQuizMockData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -544,6 +565,7 @@
 				ED3397C42F958E84009AD000 /* ChallengesVC.swift in Sources */,
 				ED3397CC2F958ECE009AD000 /* ExploreView.swift in Sources */,
 				ED3398112F959400009AD000 /* ExploreQuizItem.swift in Sources */,
+				ED3398142F959400009AD000 /* ExploreQuizMockData.swift in Sources */,
 				ED3398122F959400009AD000 /* ExploreViewModel.swift in Sources */,
 				ED3398132F959400009AD000 /* ExploreQuizCardView.swift in Sources */,
 				ED3397CE2F958EDF009AD000 /* ProfileVC.swift in Sources */,
@@ -553,6 +575,12 @@
 				AA4000102F958000009AD000 /* OnboardingContainerVC.swift in Sources */,
 				AA4000202F958000009AD000 /* OnboardingContainerView.swift in Sources */,
 				CC0100102FA00000009AD000 /* QuizQuestion.swift in Sources */,
+				CC02A0102FA00000009AD000 /* ThemedQuizPools.swift in Sources */,
+				CC02A0112FA00000009AD000 /* ThemedQuizPools+GeographyHistory.swift in Sources */,
+				CC02A0122FA00000009AD000 /* ThemedQuizPools+ScienceMovies.swift in Sources */,
+				CC02A0132FA00000009AD000 /* ThemedQuizPools+MusicSports.swift in Sources */,
+				CC02A0142FA00000009AD000 /* ThemedQuizPools+ITLanguages.swift in Sources */,
+				CC02A0152FA00000009AD000 /* QuizThemedQuestionProvider.swift in Sources */,
 				ED3397E32F966299009AD000 /* RanksView.swift in Sources */,
 				CC0100202FA00000009AD000 /* QuizViewModel.swift in Sources */,
 				CC0100302FA00000009AD000 /* QuizView.swift in Sources */,
