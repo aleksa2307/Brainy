@@ -4,7 +4,8 @@ struct QuizMeta {
     let title: String
     let emoji: String
     let category: String
-    static let `default` = QuizMeta(title: "General Quiz", emoji: "🧠", category: "General")
+    let categoryFilterID: String
+    static let `default` = QuizMeta(title: "General Quiz", emoji: "🧠", category: "General", categoryFilterID: "General")
 }
 
 protocol QuizViewModelDelegate: AnyObject {

@@ -70,6 +70,10 @@ final class HomeView: UIView {
     private let popularScrollView = UIScrollView()
     private let popularStack = UIStackView()
 
+    var onQuizSelected: ((ExploreQuizItem) -> Void)?
+    var onContinueTapped: ((ExploreQuizItem) -> Void)?
+    private var continueItem: ExploreQuizItem?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -85,10 +89,51 @@ final class HomeView: UIView {
         titleLabel.text = "Hi, \(firstName)!"
         greetingLabel.text = timeGreeting()
         streakCountLabel.text = "\(stats.currentStreak)"
+
+        // Continue card — prefer in-progress quiz, fall back to last completed
+        if let inProgress = StatsManager.shared.inProgressQuiz,
+           let match = ExploreQuizMockData.allQuizzes.first(where: { $0.title == inProgress.title }) {
+            continueTitleLabel.text = match.title
+            progressLabel.text = "Tap to continue"
+            continueItem = match
+            continueCard.alpha = 1
+        } else if let recent = stats.recentQuizzes.first,
+                  let match = ExploreQuizMockData.allQuizzes.first(where: { $0.title == recent.title }) {
+            continueTitleLabel.text = match.title
+            progressLabel.text = "\(recent.score)/\(recent.total) · play again"
+            continueItem = match
+            continueCard.alpha = 1
+        } else {
+            continueCard.alpha = 0.4
+            continueItem = nil
+        }
+
+        // Popular cards — top quiz from each category
+        popularStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        ExploreQuizMockData.topPerCategory.enumerated().forEach { idx, item in
+            let card = makePopularCard(item: item)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(popularCardTapped(_:)))
+            card.addGestureRecognizer(tap)
+            card.isUserInteractionEnabled = true
+            card.tag = idx
+            popularStack.addArrangedSubview(card)
+        }
     }
 }
 
 private extension HomeView {
+
+    @objc func continueCardTapped() {
+        guard let item = continueItem else { return }
+        onContinueTapped?(item)
+    }
+
+    @objc func popularCardTapped(_ gesture: UITapGestureRecognizer) {
+        guard let card = gesture.view else { return }
+        let quizzes = ExploreQuizMockData.topPerCategory
+        let idx = quizzes.indices.contains(card.tag) ? card.tag : 0
+        onQuizSelected?(quizzes[idx])
+    }
 
     func timeGreeting() -> String {
         let h = Calendar.current.component(.hour, from: Date())
@@ -186,6 +231,11 @@ private extension HomeView {
         progressBarBg.addSubview(progressBarFill)
         [continueCircle1, continueCircle2, continueLabelSmall, continueTitleLabel,
          progressBarBg, progressLabel, playButton].forEach { continueCard.addSubview($0) }
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(continueCardTapped))
+        continueCard.addGestureRecognizer(tap)
+        continueCard.isUserInteractionEnabled = true
+        continueCard.alpha = 0.4
     }
 
     func setupDailyChallenge() {
@@ -253,34 +303,28 @@ private extension HomeView {
         popularStack.spacing = 16
         popularStack.alignment = .top
 
-        popularStack.addArrangedSubview(makePopularCard(
-            colors: [UIColor(hex: "06b6d4"), UIColor(hex: "3b82f6")],
-            emoji: "🌍",
-            category: "Geography",
-            difficulty: "Medium",
-            title: "World Capitals Mastery",
-            rating: "4.8",
-            time: "8 min",
-            questions: "10 Q"
-        ))
-        popularStack.addArrangedSubview(makePopularCard(
-            colors: [UIColor(hex: "8b5cf6"), UIColor(hex: "6d28d9")],
-            emoji: "🎬",
-            category: "Movies",
-            difficulty: "Easy",
-            title: "Cinema Legends",
-            rating: "4.6",
-            time: "6 min",
-            questions: "8 Q"
-        ))
-
         popularScrollView.addSubview(popularStack)
+
+        // Seed with top-per-category before configure is called
+        ExploreQuizMockData.topPerCategory.enumerated().forEach { idx, item in
+            let card = makePopularCard(item: item)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(popularCardTapped(_:)))
+            card.addGestureRecognizer(tap)
+            card.isUserInteractionEnabled = true
+            card.tag = idx
+            popularStack.addArrangedSubview(card)
+        }
     }
 
-    func makePopularCard(colors: [UIColor], emoji: String, category: String, difficulty: String, title: String, rating: String, time: String, questions: String) -> UIView {
+    func makePopularCard(item: ExploreQuizItem) -> UIView {
+        let colors = [UIColor(hex: item.thumbnailGradientStartHex), UIColor(hex: item.thumbnailGradientEndHex)]
         let card = UIView()
         card.backgroundColor = .white
         card.layer.cornerRadius = 24
+        card.layer.shadowColor = UIColor.black.cgColor
+        card.layer.shadowOpacity = 0.07
+        card.layer.shadowOffset = CGSize(width: 0, height: 4)
+        card.layer.shadowRadius = 8
 
         let imageArea = GradientView(colors: colors)
         imageArea.layer.cornerRadius = 24
@@ -288,14 +332,14 @@ private extension HomeView {
         imageArea.clipsToBounds = true
 
         let emojiLabel = UILabel()
-        emojiLabel.text = emoji
+        emojiLabel.text = item.emoji
         emojiLabel.font = .systemFont(ofSize: 46)
 
-        let categoryBadge = makeCardBadge(title: category)
-        let diffBadge = makeCardBadge(title: difficulty)
+        let categoryBadge = makeCardBadge(title: item.categoryLabel)
+        let diffBadge = makeCardBadge(title: item.difficulty.title)
 
         let titleLabel = UILabel()
-        titleLabel.text = title
+        titleLabel.text = item.title
         titleLabel.font = .systemFont(ofSize: 14, weight: .bold)
         titleLabel.textColor = UIColor(hex: "0f172a")
         titleLabel.numberOfLines = 2
@@ -304,10 +348,9 @@ private extension HomeView {
         metaStack.axis = .horizontal
         metaStack.spacing = 8
         metaStack.alignment = .center
-
-        metaStack.addArrangedSubview(makeMetaItem(icon: "star.fill", text: rating))
-        metaStack.addArrangedSubview(makeMetaItem(icon: "clock", text: time))
-        metaStack.addArrangedSubview(makeMetaItem(icon: "questionmark.circle", text: questions))
+        metaStack.addArrangedSubview(makeMetaItem(icon: "star.fill", text: item.rating))
+        metaStack.addArrangedSubview(makeMetaItem(icon: "clock", text: item.duration))
+        metaStack.addArrangedSubview(makeMetaItem(icon: "person.2", text: item.participants))
 
         imageArea.addSubview(emojiLabel)
         imageArea.addSubview(categoryBadge)
@@ -317,40 +360,12 @@ private extension HomeView {
         card.addSubview(metaStack)
 
         card.snp.makeConstraints { $0.width.equalTo(200) }
-
-        imageArea.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(120)
-        }
-
-        emojiLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(10)
-            $0.top.equalToSuperview().inset(12)
-        }
-
-        categoryBadge.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(14)
-            $0.bottom.equalToSuperview().inset(12)
-            $0.height.equalTo(22)
-        }
-
-        diffBadge.snp.makeConstraints {
-            $0.leading.equalTo(categoryBadge.snp.trailing).offset(6)
-            $0.bottom.equalToSuperview().inset(12)
-            $0.height.equalTo(22)
-        }
-
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(imageArea.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(14)
-        }
-
-        metaStack.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().inset(14)
-            $0.trailing.lessThanOrEqualToSuperview().inset(14)
-            $0.bottom.equalToSuperview().inset(12)
-        }
+        imageArea.snp.makeConstraints { $0.top.leading.trailing.equalToSuperview(); $0.height.equalTo(120) }
+        emojiLabel.snp.makeConstraints { $0.trailing.equalToSuperview().inset(10); $0.top.equalToSuperview().inset(12) }
+        categoryBadge.snp.makeConstraints { $0.leading.equalToSuperview().inset(14); $0.bottom.equalToSuperview().inset(12); $0.height.equalTo(22) }
+        diffBadge.snp.makeConstraints { $0.leading.equalTo(categoryBadge.snp.trailing).offset(6); $0.bottom.equalToSuperview().inset(12); $0.height.equalTo(22) }
+        titleLabel.snp.makeConstraints { $0.top.equalTo(imageArea.snp.bottom).offset(12); $0.leading.trailing.equalToSuperview().inset(14) }
+        metaStack.snp.makeConstraints { $0.top.equalTo(titleLabel.snp.bottom).offset(8); $0.leading.equalToSuperview().inset(14); $0.trailing.lessThanOrEqualToSuperview().inset(14); $0.bottom.equalToSuperview().inset(12) }
 
         return card
     }

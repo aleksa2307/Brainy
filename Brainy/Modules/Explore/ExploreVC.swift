@@ -11,7 +11,7 @@ final class ExploreViewController: UIViewController {
     }
 
     private func presentQuiz(item: ExploreQuizItem) {
-        let meta = QuizMeta(title: item.title, emoji: item.emoji, category: item.categoryLabel)
+        let meta = QuizMeta(title: item.title, emoji: item.emoji, category: item.categoryLabel, categoryFilterID: item.categoryFilterID)
         let questions = QuizThemedQuestionProvider.questions(
             forCategory: item.categoryFilterID,
             quizTitle: item.title

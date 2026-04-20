@@ -13,6 +13,13 @@ struct QuizRecord: Codable {
     var isPerfect: Bool { score == total && total > 0 }
 }
 
+struct InProgressQuiz: Codable {
+    let title: String
+    let emoji: String
+    let category: String
+    let categoryFilterID: String
+}
+
 struct BadgeInfo {
     let id: String
     let emoji: String
@@ -84,6 +91,34 @@ final class StatsManager {
 
     private let defaults = UserDefaults.standard
     private let statsKey = "brainy_user_stats"
+    private let inProgressKey = "brainy_in_progress_quiz"
+
+    var inProgressQuiz: InProgressQuiz? {
+        get {
+            guard let data = defaults.data(forKey: inProgressKey),
+                  let quiz = try? JSONDecoder().decode(InProgressQuiz.self, from: data)
+            else { return nil }
+            return quiz
+        }
+        set {
+            if let quiz = newValue, let data = try? JSONEncoder().encode(quiz) {
+                defaults.set(data, forKey: inProgressKey)
+            } else {
+                defaults.removeObject(forKey: inProgressKey)
+            }
+        }
+    }
+
+    func markQuizStarted(_ meta: QuizMeta) {
+        inProgressQuiz = InProgressQuiz(
+            title: meta.title, emoji: meta.emoji,
+            category: meta.category, categoryFilterID: meta.categoryFilterID
+        )
+    }
+
+    func clearInProgressQuiz() {
+        inProgressQuiz = nil
+    }
 
     var stats: UserStats {
         get {

@@ -24,6 +24,7 @@ final class QuizViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        StatsManager.shared.markQuizStarted(viewModel.meta)
         viewModel.startTimer()
     }
 

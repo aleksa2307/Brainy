@@ -11,6 +11,7 @@ final class QuizResultsViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
+        StatsManager.shared.clearInProgressQuiz()
         StatsManager.shared.recordQuiz(
             title: viewModel.meta.title,
             emoji: viewModel.meta.emoji,

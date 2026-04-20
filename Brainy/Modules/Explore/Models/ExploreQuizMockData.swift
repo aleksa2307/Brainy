@@ -100,6 +100,20 @@ enum ExploreQuizMockData {
         )
     }
 
+    static var topPerCategory: [ExploreQuizItem] {
+        let order = ["Geography", "Science", "Movies", "History", "Music", "IT", "Sports", "Languages"]
+        return order.compactMap { category in
+            allQuizzes
+                .filter { $0.categoryFilterID == category }
+                .max { participantScore($0) < participantScore($1) }
+        }
+    }
+
+    private static func participantScore(_ item: ExploreQuizItem) -> Int {
+        let s = item.participants.lowercased().replacingOccurrences(of: "k", with: "")
+        return Int((Double(s) ?? 0) * 1000)
+    }
+
     static let allQuizzes: [ExploreQuizItem] = [
         makeQuiz(theme: geography, title: "World Capitals Mastery", emoji: "🌍", rating: "4.8", duration: "8 min", participants: "13k", difficulty: .medium),
         makeQuiz(theme: geography, title: "Rivers & Lakes", emoji: "🏞️", rating: "4.6", duration: "7 min", participants: "9k", difficulty: .easy),
