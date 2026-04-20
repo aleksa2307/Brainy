@@ -13,8 +13,20 @@ final class SettingsViewController: UIViewController {
         settingsView.logOutButton.addTarget(self, action: #selector(logOutTapped), for: .touchUpInside)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+
     override func loadView() {
         view = SettingsView()
+    }
+}
+
+extension SettingsViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return (navigationController?.viewControllers.count ?? 0) > 1
     }
 }
 

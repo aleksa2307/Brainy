@@ -9,9 +9,18 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileView.settingsRowButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
+        profileView.settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
     }
 
     override func loadView() {
         view = ProfileView()
+    }
+}
+
+private extension ProfileViewController {
+
+    @objc func settingsTapped() {
+        navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
 }

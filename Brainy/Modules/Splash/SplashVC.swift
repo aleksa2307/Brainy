@@ -20,17 +20,15 @@ final class SplashVC: UIViewController {
     }
 }
 
-// MARK: - Navigation
-
 private extension SplashVC {
-
     func showOnboarding() {
         let vc = OnboardingContainerVC()
         vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true)
     }
 
     func showSignIn() {
-        // TODO: sign in flow
+        
     }
 }

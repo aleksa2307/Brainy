@@ -60,6 +60,7 @@ private extension OnboardingContainerVC {
     func finish() {
         let tabBarVC = CustomTabBarViewController()
         tabBarVC.modalPresentationStyle = .fullScreen
+        tabBarVC.modalTransitionStyle = .crossDissolve
         present(tabBarVC, animated: true)
     }
 }

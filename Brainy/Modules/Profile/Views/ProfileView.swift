@@ -39,7 +39,7 @@ final class ProfileView: UIView {
 
     private let titleLabel = UILabel()
     private let bellButton = UIButton(type: .system)
-    private let settingsButton = UIButton(type: .system)
+    let settingsButton = UIButton(type: .system)
 
     // MARK: - User Card
 
@@ -82,6 +82,7 @@ final class ProfileView: UIView {
     // MARK: - Menu
 
     private let menuCard = UIView()
+    let settingsRowButton = UIButton(type: .system)
 
     // MARK: - Init
 
@@ -330,10 +331,10 @@ private extension ProfileView {
 
         row1.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(68)
+            $0.height.equalTo(80)
         }
         row2.snp.makeConstraints {
-            $0.top.equalTo(row1.snp.bottom).offset(8)
+            $0.top.equalTo(row1.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(80)
             $0.bottom.equalToSuperview().inset(16)
@@ -344,46 +345,31 @@ private extension ProfileView {
         let stack = UIStackView(arrangedSubviews: badges)
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        stack.alignment = .center
+        stack.alignment = .fill
         return stack
     }
 
     func makeBadgeItem(emoji: String, title: String, isLocked: Bool) -> UIView {
         let container = UIView()
 
-        let iconBg = UIView()
-        iconBg.layer.cornerRadius = 14
+        let iconBg: UIView
         if isLocked {
-            iconBg.backgroundColor = UIColor(hex: "f1f5f9")
-            iconBg.alpha = 0.5
+            let bg = UIView()
+            bg.backgroundColor = UIColor(hex: "f1f5f9")
+            bg.alpha = 0.5
+            bg.layer.cornerRadius = 14
+            iconBg = bg
         } else {
-            let grad = GradientView(
-                colors: [UIColor(hex: "eef2ff"), UIColor(hex: "ddd6fe")]
-            )
+            let grad = GradientView(colors: [UIColor(hex: "eef2ff"), UIColor(hex: "ddd6fe")])
             grad.layer.cornerRadius = 14
             grad.clipsToBounds = true
-            container.addSubview(grad)
-            grad.snp.makeConstraints {
-                $0.centerX.equalToSuperview()
-                $0.top.equalToSuperview()
-                $0.size.equalTo(52)
-            }
-        }
-
-        if isLocked {
-            container.addSubview(iconBg)
-            iconBg.snp.makeConstraints {
-                $0.centerX.equalToSuperview()
-                $0.top.equalToSuperview()
-                $0.size.equalTo(52)
-            }
+            iconBg = grad
         }
 
         let emojiLabel = UILabel()
         emojiLabel.text = emoji
         emojiLabel.font = .systemFont(ofSize: 24)
         emojiLabel.textAlignment = .center
-        if isLocked { emojiLabel.alpha = 0.5 }
 
         let titleLabel = UILabel()
         titleLabel.text = title
@@ -392,16 +378,19 @@ private extension ProfileView {
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 2
 
-        container.addSubview(emojiLabel)
+        iconBg.addSubview(emojiLabel)
+        container.addSubview(iconBg)
         container.addSubview(titleLabel)
 
-        emojiLabel.snp.makeConstraints {
+        emojiLabel.snp.makeConstraints { $0.center.equalToSuperview() }
+        iconBg.snp.makeConstraints {
+            $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(14)
+            $0.size.equalTo(52)
         }
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(56)
-            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(iconBg.snp.bottom).offset(4)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
 
         return container
@@ -559,7 +548,6 @@ private extension ProfileView {
         menuCard.clipsToBounds = true
 
         let items = [
-            (emoji: "👑", title: "Go Premium",     bg: UIColor(hex: "fef3c7"), isLast: false),
             (emoji: "🔔", title: "Notifications",  bg: UIColor(hex: "eef2ff"), isLast: false),
             (emoji: "⚙️", title: "Settings",       bg: UIColor(hex: "f1f5f9"), isLast: false),
             (emoji: "💬", title: "Help & Support", bg: UIColor(hex: "dcfce7"), isLast: true)
@@ -580,6 +568,10 @@ private extension ProfileView {
             }
             if item.isLast {
                 row.snp.makeConstraints { $0.bottom.equalToSuperview() }
+            }
+            if item.title == "Settings" {
+                row.addSubview(settingsRowButton)
+                settingsRowButton.snp.makeConstraints { $0.edges.equalToSuperview() }
             }
             prev = row
         }

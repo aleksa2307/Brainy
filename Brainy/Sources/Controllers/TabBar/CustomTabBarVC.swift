@@ -33,12 +33,14 @@ private extension CustomTabBarViewController {
     }
 
     func registerControllers() {
+        let profileNav = UINavigationController(rootViewController: ProfileViewController())
+        profileNav.setNavigationBarHidden(true, animated: false)
         contentControllers = [
             .home: HomeViewController(),
             .explore: ExploreViewController(),
             .challenges: ChallengesViewController(),
-            .ranks: UIViewController(),
-            .profile: ProfileViewController()
+            .ranks: RanksViewController(),
+            .profile: profileNav
         ]
     }
 

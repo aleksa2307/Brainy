@@ -128,7 +128,6 @@ final class SettingsView: UIView {
     private let notificationsRow = SettingsItemView(emoji: "🔔", title: "Notifications", accessory: .toggle(true))
     private let soundEffectsRow = SettingsItemView(emoji: "🔊", title: "Sound Effects", accessory: .toggle(true))
     private let hapticRow = SettingsItemView(emoji: "📳", title: "Haptic Feedback", accessory: .toggle(true))
-    private let languageRow = SettingsItemView(emoji: "🌍", title: "Language", accessory: .valueChevron("English"))
 
     // MARK: - Legal rows
     private let privacyRow = SettingsItemView(emoji: "🛡️", title: "Privacy Policy", accessory: .chevron)
@@ -231,7 +230,7 @@ private extension SettingsView {
         }
 
         let accountCard = buildCard(rows: [editProfileRow, changePasswordRow, emailPrefsRow])
-        let prefsCard = buildCard(rows: [darkModeRow, notificationsRow, soundEffectsRow, hapticRow, languageRow])
+        let prefsCard = buildCard(rows: [darkModeRow, notificationsRow, soundEffectsRow, hapticRow])
         let legalCard = buildCard(rows: [privacyRow, termsRow, licensesRow])
 
         let accountSection = buildSection(title: "ACCOUNT", card: accountCard)
