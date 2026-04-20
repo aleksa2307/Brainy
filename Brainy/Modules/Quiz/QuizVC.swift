@@ -32,7 +32,6 @@ final class QuizViewController: UIViewController {
             let resultsVC = QuizResultsViewController(viewModel: viewModel)
             resultsVC.onRetry = { [weak self] in
                 guard let self else { return }
-                // Fresh VM, reuse same QuizVC — no dismiss/re-present needed
                 let freshVM = QuizViewModel(questions: self.viewModel.questions)
                 freshVM.delegate = self
                 self.viewModel = freshVM

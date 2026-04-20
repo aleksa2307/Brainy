@@ -37,7 +37,6 @@ struct ExploreQuizItem: Equatable {
         }
     }
 
-    /// Matches `ExploreViewModel.categories` titles for filtering (except "All").
     let categoryFilterID: String
     let categoryLabel: String
     let categoryLabelColorHex: String

@@ -9,8 +9,6 @@ final class CreateAccountView: UIView {
     var onCreate: (() -> Void)?
     var onLogIn: (() -> Void)?
 
-    // MARK: - Subviews
-
     let backButton = UIButton(type: .system)
 
     private let titleLabel = UILabel()
@@ -45,8 +43,6 @@ final class CreateAccountView: UIView {
     private let haveAccountLabel = UILabel()
     private let logInButton = UIButton(type: .system)
 
-    // MARK: - Init
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -60,8 +56,6 @@ final class CreateAccountView: UIView {
         createGradient.frame = createButton.bounds
     }
 }
-
-// MARK: - Setup
 
 private extension CreateAccountView {
 
@@ -410,8 +404,6 @@ private extension CreateAccountView {
         }
     }
 }
-
-// MARK: - Actions
 
 private extension CreateAccountView {
 

@@ -18,8 +18,6 @@ final class OnboardingPageView: UIView {
     required init?(coder: NSCoder) { fatalError() }
 }
 
-// MARK: - Private Setup
-
 private extension OnboardingPageView {
 
     func configure(with model: OnboardingPageModel) {
@@ -58,8 +56,6 @@ private extension OnboardingPageView {
         }
     }
 }
-
-// MARK: - IllustrationCardView
 
 private final class IllustrationCardView: UIView {
 

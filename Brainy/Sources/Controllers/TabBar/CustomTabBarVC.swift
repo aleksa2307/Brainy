@@ -16,8 +16,6 @@ final class CustomTabBarViewController: UIViewController {
     }
 }
 
-// MARK: - Private
-
 private extension CustomTabBarViewController {
     func setupUI() {
         view.backgroundColor = .systemBackground

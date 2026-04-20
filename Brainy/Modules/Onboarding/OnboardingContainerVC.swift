@@ -24,8 +24,6 @@ final class OnboardingContainerVC: UIViewController {
     }
 }
 
-// MARK: - Private
-
 private extension OnboardingContainerVC {
 
     func setupPageVC() {
@@ -36,7 +34,6 @@ private extension OnboardingContainerVC {
         pageVC.view.backgroundColor = .clear
         pageVC.didMove(toParent: self)
 
-        // disable swipe — navigation is button-only
         pageVC.dataSource = nil
 
         pageVC.setViewControllers([pages[0]], direction: .forward, animated: false)

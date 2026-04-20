@@ -53,8 +53,6 @@ final class OnboardingContainerView: UIView {
     }
 }
 
-// MARK: - Private Setup
-
 private extension OnboardingContainerView {
 
     func setupUI() {
@@ -98,8 +96,6 @@ private extension OnboardingContainerView {
     @objc func skipTapped() { onSkip?() }
     @objc func actionTapped() { onAction?() }
 }
-
-// MARK: - OnboardingDotsView
 
 private final class OnboardingDotsView: UIView {
 

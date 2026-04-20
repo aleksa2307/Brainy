@@ -25,8 +25,6 @@ enum TabBarItem: Int, CaseIterable {
     }
 }
 
-// MARK: - TabBarItemView
-
 private final class TabBarItemView: UIView {
     let item: TabBarItem
     var onTap: (() -> Void)?
@@ -108,8 +106,6 @@ private extension TabBarItemView {
         }
     }
 }
-
-// MARK: - CustomTabBarView
 
 final class CustomTabBarView: UIView {
     var onTabSelected: ((TabBarItem) -> Void)?

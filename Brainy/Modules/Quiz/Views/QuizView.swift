@@ -1,8 +1,6 @@
 import UIKit
 import SnapKit
 
-// MARK: - Gradient helper
-
 private final class GradientView: UIView {
     private let layer_ = CAGradientLayer()
 
@@ -24,8 +22,6 @@ private final class GradientView: UIView {
         layer_.frame = bounds
     }
 }
-
-// MARK: - Answer option button
 
 private final class AnswerOptionView: UIControl {
 
@@ -96,8 +92,6 @@ private final class AnswerOptionView: UIControl {
         snp.makeConstraints { $0.height.equalTo(68) }
     }
 
-    // MARK: - State transitions
-
     func applyDefault() {
         backgroundColor = .white
         layer.borderColor = UIColor(hex: "e2e8f0").cgColor
@@ -157,8 +151,6 @@ private extension Array {
     }
 }
 
-// MARK: - QuizView
-
 final class QuizView: UIView {
 
     var onAnswerSelected: ((Int) -> Void)?
@@ -167,7 +159,6 @@ final class QuizView: UIView {
 
     private weak var viewModel: QuizViewModel?
 
-    // MARK: Header
     private let closeButton: UIButton = {
         let b = UIButton(type: .system)
         let cfg = UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold)
@@ -204,7 +195,6 @@ final class QuizView: UIView {
         return l
     }()
 
-    // MARK: Progress
     private let progressBg: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor(hex: "e2e8f0")
@@ -214,7 +204,6 @@ final class QuizView: UIView {
     private let progressFill = GradientView(start: UIColor(hex: "4f46e5"), end: UIColor(hex: "7c3aed"))
     private var progressFraction: CGFloat = 0
 
-    // MARK: Timer
     private let timerPill: UIView = {
         let v = UIView()
         v.backgroundColor = .white
@@ -253,7 +242,6 @@ final class QuizView: UIView {
     }()
     private var timerBarFraction: CGFloat = 1
 
-    // MARK: Question card
     private let questionCard: UIView = {
         let v = UIView()
         v.backgroundColor = .white
@@ -273,7 +261,6 @@ final class QuizView: UIView {
         return l
     }()
 
-    // MARK: Answers
     private let answersStack: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
@@ -283,7 +270,6 @@ final class QuizView: UIView {
     }()
     private var answerButtons: [AnswerOptionView] = []
 
-    // MARK: Feedback sheet
     private let feedbackSheet: UIView = {
         let v = UIView()
         v.layer.cornerRadius = 28
@@ -343,8 +329,6 @@ final class QuizView: UIView {
         return b
     }()
 
-    // MARK: Init
-
     init(viewModel: QuizViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -356,8 +340,6 @@ final class QuizView: UIView {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    // MARK: - Layout
-
     override func layoutSubviews() {
         super.layoutSubviews()
         let pw = progressBg.bounds.width * max(progressFraction, 0.005)
@@ -365,8 +347,6 @@ final class QuizView: UIView {
         let tw = timerBarBg.bounds.width * max(timerBarFraction, 0)
         timerBarFill.snp.updateConstraints { $0.width.equalTo(max(tw, 2)) }
     }
-
-    // MARK: - Public
 
     func reset(viewModel newVM: QuizViewModel) {
         viewModel = newVM
@@ -384,11 +364,9 @@ final class QuizView: UIView {
         typeBadge.textColor = q.type.badgeTextColor
         typeBadge.backgroundColor = q.type.badgeBackground
 
-        // Progress bar
         progressFraction = CGFloat(vm.progressFraction)
         setNeedsLayout()
 
-        // Rebuild answer buttons
         answersStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         answerButtons.removeAll()
         for (i, option) in q.options.enumerated() {
@@ -398,10 +376,8 @@ final class QuizView: UIView {
             answerButtons.append(btn)
         }
 
-        // Timer
         updateTimer(seconds: 30, progress: 1.0)
 
-        // Hide feedback sheet
         UIView.animate(withDuration: 0.3) {
             self.feedbackSheet.transform = CGAffineTransform(translationX: 0, y: 340)
         }
@@ -438,8 +414,6 @@ final class QuizView: UIView {
         showFeedback(isCorrect: isCorrect)
     }
 
-    // MARK: - Private setup
-
     private func setupUI() {
         backgroundColor = UIColor(hex: "f8fafc")
         progressFill.layer.cornerRadius = 3
@@ -468,7 +442,6 @@ final class QuizView: UIView {
     }
 
     private func setupConstraints() {
-        // Header
         let xpRow = UIStackView(arrangedSubviews: [xpIconLabel, xpValueLabel])
         xpRow.axis = .horizontal
         xpRow.spacing = 4
@@ -498,7 +471,6 @@ final class QuizView: UIView {
             $0.leading.trailing.equalToSuperview().inset(12)
         }
 
-        // Progress bar
         addSubview(progressBg)
         progressBg.addSubview(progressFill)
         progressBg.snp.makeConstraints {
@@ -511,7 +483,6 @@ final class QuizView: UIView {
             $0.width.equalTo(2)
         }
 
-        // Timer pill
         addSubview(timerPill)
         timerPill.addSubview(timerIcon)
         timerPill.addSubview(timerLabel)
@@ -543,8 +514,7 @@ final class QuizView: UIView {
             $0.top.bottom.leading.equalToSuperview()
             $0.width.equalTo(64)
         }
-
-        // Question card
+        
         addSubview(questionCard)
         questionCard.addSubview(typeBadge)
         questionCard.addSubview(questionTextLabel)
@@ -563,14 +533,12 @@ final class QuizView: UIView {
             $0.bottom.equalToSuperview().offset(-24)
         }
 
-        // Answers
         addSubview(answersStack)
         answersStack.snp.makeConstraints {
             $0.top.equalTo(questionCard.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
 
-        // Feedback sheet
         addSubview(feedbackSheet)
         feedbackSheet.addSubview(sheetDragHandle)
         feedbackSheet.addSubview(feedbackIcon)
@@ -625,8 +593,6 @@ final class QuizView: UIView {
         }
     }
 
-    // MARK: - Feedback display
-
     private func showFeedback(isCorrect: Bool) {
         guard let vm = viewModel else { return }
         let q = vm.currentQuestion
@@ -671,8 +637,6 @@ final class QuizView: UIView {
         }
     }
 
-    // MARK: - Actions
-
     @objc private func answerTapped(_ sender: AnswerOptionView) {
         answerButtons.forEach { $0.isUserInteractionEnabled = false }
         onAnswerSelected?(sender.optionIndex)
@@ -686,8 +650,6 @@ final class QuizView: UIView {
         onContinue?()
     }
 }
-
-// MARK: - PaddedLabel
 
 final class PaddedLabel: UILabel {
     var contentInsets = UIEdgeInsets.zero {

@@ -21,8 +21,6 @@ final class CreateAccountVC: UIViewController {
     }
 }
 
-// MARK: - Private
-
 private extension CreateAccountVC {
 
     func handleCreate() {

@@ -22,8 +22,6 @@ final class LoginVC: UIViewController {
     }
 }
 
-// MARK: - Private
-
 private extension LoginVC {
 
     func handleLogin() {

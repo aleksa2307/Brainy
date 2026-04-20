@@ -6,15 +6,11 @@ final class SplashView: UIView {
     var onGetStarted: (() -> Void)?
     var onSignIn: (() -> Void)?
 
-    // MARK: - Background
-
     private let gradientLayer = CAGradientLayer()
     private let blob1 = UIView()
     private let blob2 = UIView()
     private let blob3 = UIView()
     private let blob4 = UIView()
-
-    // MARK: - Content
 
     private let appIconContainer = UIView()
     private let appIconLabel = UILabel()
@@ -39,8 +35,6 @@ final class SplashView: UIView {
         gradientLayer.frame = bounds
     }
 
-    // MARK: - Animation Entry Point
-
     func playEntranceAnimation() {
         animateBlobs()
         animateIcon(delay: 0.25)
@@ -64,8 +58,6 @@ final class SplashView: UIView {
     }
 }
 
-// MARK: - Initial State
-
 private extension SplashView {
 
     func setInitialState() {
@@ -88,8 +80,6 @@ private extension SplashView {
         }
     }
 }
-
-// MARK: - Animations
 
 private extension SplashView {
 
@@ -155,7 +145,6 @@ private extension SplashView {
         }
     }
 
-    // Continuous gentle float on blobs
     func startBlobFloat() {
         typealias Float = (UIView, CGFloat, CGFloat, TimeInterval, TimeInterval)
         let floats: [Float] = [
@@ -175,7 +164,6 @@ private extension SplashView {
         }
     }
 
-    // Subtle scale breathe on the icon
     func startIconPulse() {
         UIView.animate(
             withDuration: 2.2,
@@ -186,8 +174,6 @@ private extension SplashView {
         }
     }
 }
-
-// MARK: - Setup
 
 private extension SplashView {
 

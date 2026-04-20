@@ -2,9 +2,6 @@ import UIKit
 import SnapKit
 
 final class RanksView: UIView {
-
-    // MARK: - Types
-
     private enum Trend { case up, down, neutral }
     private enum Period { case today, week, month }
 
@@ -19,8 +16,6 @@ final class RanksView: UIView {
         let trend: Trend
         let isMe: Bool
     }
-
-    // MARK: - Data
 
     private let entriesByPeriod: [Period: [Entry]] = [
         .today: [
@@ -62,8 +57,6 @@ final class RanksView: UIView {
         didSet { reloadContent() }
     }
 
-    // MARK: - Subviews
-
     private let scrollView: UIScrollView = {
         let s = UIScrollView()
         s.showsVerticalScrollIndicator = false
@@ -94,8 +87,6 @@ final class RanksView: UIView {
         return s
     }()
 
-    // MARK: - Init
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -108,8 +99,6 @@ final class RanksView: UIView {
         super.layoutSubviews()
         podiumGradient.frame = podiumView.bounds
     }
-
-    // MARK: - Factory
 
     private static func filterBtn(_ title: String, active: Bool) -> UIButton {
         let b = UIButton(type: .system)
@@ -130,8 +119,6 @@ final class RanksView: UIView {
         return b
     }
 }
-
-// MARK: - Setup
 
 private extension RanksView {
 
@@ -213,8 +200,6 @@ private extension RanksView {
         }
     }
 
-    // MARK: - Reload
-
     func reloadContent() {
         let activeBtn: UIButton
         switch currentPeriod {
@@ -233,8 +218,6 @@ private extension RanksView {
         listStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         rest.forEach { listStack.addArrangedSubview(makeEntryRow($0)) }
     }
-
-    // MARK: - Podium
 
     private func rebuildPodium(top3: [Entry]) {
         podiumView.subviews.forEach { $0.removeFromSuperview() }
@@ -369,8 +352,6 @@ private extension RanksView {
 
         return col
     }
-
-    // MARK: - List Row
 
     private func makeEntryRow(_ entry: Entry) -> UIView {
         let card = UIView()

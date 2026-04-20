@@ -1,8 +1,6 @@
 import UIKit
 import SnapKit
 
-// MARK: - GradientView
-
 private final class GradientView: UIView {
     private let gradientLayer = CAGradientLayer()
 
@@ -26,22 +24,13 @@ private final class GradientView: UIView {
     }
 }
 
-// MARK: - ProfileView
-
 final class ProfileView: UIView {
-
-    // MARK: - Scroll
-
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-
-    // MARK: - Header
 
     private let titleLabel = UILabel()
     private let bellButton = UIButton(type: .system)
     let settingsButton = UIButton(type: .system)
-
-    // MARK: - User Card
 
     private let userCard = UIView()
     private let avatarView = GradientView(colors: [UIColor(hex: "4f46e5"), UIColor(hex: "7c3aed")])
@@ -64,27 +53,18 @@ final class ProfileView: UIView {
     )
     private let xpToNextLabel = UILabel()
 
-    // MARK: - Stats
-
     private let statsTitleLabel = UILabel()
     private let statsGridView = UIView()
 
-    // MARK: - Badges
 
     private let badgesTitleLabel = UILabel()
     private let badgesCard = UIView()
 
-    // MARK: - Recent Quizzes
-
     private let quizzesTitleLabel = UILabel()
     private let quizzesCard = UIView()
 
-    // MARK: - Menu
-
     private let menuCard = UIView()
     let settingsRowButton = UIButton(type: .system)
-
-    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -96,8 +76,6 @@ final class ProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-// MARK: - Setup
 
 private extension ProfileView {
 
@@ -112,8 +90,6 @@ private extension ProfileView {
         setupRecentQuizzesSection()
         setupMenuCard()
     }
-
-    // MARK: Header
 
     func setupHeader() {
         titleLabel.text = "Profile"
@@ -132,8 +108,6 @@ private extension ProfileView {
         bellButton.setImage(UIImage(systemName: "bell")?.withRenderingMode(.alwaysTemplate), for: .normal)
         settingsButton.setImage(UIImage(systemName: "gearshape")?.withRenderingMode(.alwaysTemplate), for: .normal)
     }
-
-    // MARK: User Card
 
     func setupUserCard() {
         userCard.backgroundColor = .white
@@ -213,8 +187,6 @@ private extension ProfileView {
             userCard.addSubview($0)
         }
     }
-
-    // MARK: Stats
 
     func setupStatsSection() {
         statsTitleLabel.text = "Stats"
@@ -298,8 +270,6 @@ private extension ProfileView {
 
         return card
     }
-
-    // MARK: Badges
 
     func setupBadgesSection() {
         badgesTitleLabel.text = "Badges"
@@ -395,8 +365,6 @@ private extension ProfileView {
 
         return container
     }
-
-    // MARK: Recent Quizzes
 
     func setupRecentQuizzesSection() {
         quizzesTitleLabel.text = "Recent Quizzes"
@@ -536,8 +504,6 @@ private extension ProfileView {
         return row
     }
 
-    // MARK: Menu
-
     func setupMenuCard() {
         menuCard.backgroundColor = .white
         menuCard.layer.cornerRadius = 20
@@ -630,8 +596,6 @@ private extension ProfileView {
         return row
     }
 
-    // MARK: Constraints
-
     func setupConstraints() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -648,7 +612,6 @@ private extension ProfileView {
             $0.width.equalTo(scrollView)
         }
 
-        // Header
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(60)
             $0.leading.equalToSuperview().inset(24)
@@ -665,7 +628,6 @@ private extension ProfileView {
             $0.size.equalTo(40)
         }
 
-        // User Card
         userCard.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(24)
@@ -736,7 +698,6 @@ private extension ProfileView {
             $0.bottom.equalToSuperview().inset(20)
         }
 
-        // Stats
         statsTitleLabel.snp.makeConstraints {
             $0.top.equalTo(userCard.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
@@ -746,8 +707,7 @@ private extension ProfileView {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.height.equalTo(276)
         }
-
-        // Badges
+        
         badgesTitleLabel.snp.makeConstraints {
             $0.top.equalTo(statsGridView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
@@ -757,7 +717,6 @@ private extension ProfileView {
             $0.leading.trailing.equalToSuperview().inset(24)
         }
 
-        // Recent Quizzes
         quizzesTitleLabel.snp.makeConstraints {
             $0.top.equalTo(badgesCard.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
@@ -767,7 +726,6 @@ private extension ProfileView {
             $0.leading.trailing.equalToSuperview().inset(24)
         }
 
-        // Menu
         menuCard.snp.makeConstraints {
             $0.top.equalTo(quizzesCard.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(24)

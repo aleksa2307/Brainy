@@ -1,8 +1,6 @@
 import UIKit
 import SnapKit
 
-// MARK: - SettingsItemView
-
 private final class SettingsItemView: UIView {
 
     enum Accessory {
@@ -103,43 +101,32 @@ private final class SettingsItemView: UIView {
     }
 }
 
-// MARK: - SettingsView
-
 final class SettingsView: UIView {
 
-    // MARK: - Public
     let backButton = UIButton(type: .system)
     let logOutButton = UIButton(type: .system)
 
-    // MARK: - Header
     private let titleLabel = UILabel()
 
-    // MARK: - Scroll
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
-    // MARK: - Account rows
     private let editProfileRow = SettingsItemView(emoji: "👤", title: "Edit Profile", accessory: .chevron)
     private let changePasswordRow = SettingsItemView(emoji: "🔑", title: "Change Password", accessory: .chevron)
     private let emailPrefsRow = SettingsItemView(emoji: "📧", title: "Email Preferences", accessory: .chevron)
 
-    // MARK: - Preferences rows
     private let darkModeRow = SettingsItemView(emoji: "🌙", title: "Dark Mode", accessory: .toggle(false))
     private let notificationsRow = SettingsItemView(emoji: "🔔", title: "Notifications", accessory: .toggle(true))
     private let soundEffectsRow = SettingsItemView(emoji: "🔊", title: "Sound Effects", accessory: .toggle(true))
     private let hapticRow = SettingsItemView(emoji: "📳", title: "Haptic Feedback", accessory: .toggle(true))
 
-    // MARK: - Legal rows
     private let privacyRow = SettingsItemView(emoji: "🛡️", title: "Privacy Policy", accessory: .chevron)
     private let termsRow = SettingsItemView(emoji: "📄", title: "Terms of Service", accessory: .chevron)
     private let licensesRow = SettingsItemView(emoji: "📜", title: "Open Source Licenses", accessory: .chevron)
-
-    // MARK: - Footer
+    
     private let appIconLabel = UILabel()
     private let appNameLabel = UILabel()
     private let versionLabel = UILabel()
-
-    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -151,9 +138,6 @@ final class SettingsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-// MARK: - Setup
-
 private extension SettingsView {
 
     func setupUI() {

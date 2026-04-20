@@ -10,8 +10,6 @@ final class LoginView: UIView {
     var onForgotPassword: (() -> Void)?
     var onSignUp: (() -> Void)?
 
-    // MARK: - Subviews
-
     let backButton = UIButton(type: .system)
 
     private let titleLabel = UILabel()
@@ -44,8 +42,6 @@ final class LoginView: UIView {
     private let noAccountLabel = UILabel()
     private let signUpButton = UIButton(type: .system)
 
-    // MARK: - Init
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -59,8 +55,6 @@ final class LoginView: UIView {
         loginGradient.frame = loginButton.bounds
     }
 }
-
-// MARK: - Setup
 
 private extension LoginView {
 
@@ -373,8 +367,6 @@ private extension LoginView {
         }
     }
 }
-
-// MARK: - Actions
 
 private extension LoginView {
 

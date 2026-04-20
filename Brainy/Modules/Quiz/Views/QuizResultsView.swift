@@ -1,8 +1,6 @@
 import UIKit
 import SnapKit
 
-// MARK: - Gradient helper
-
 private final class ResultsHeaderGradient: UIView {
     private let gl = CAGradientLayer()
     override init(frame: CGRect = .zero) {
@@ -34,8 +32,6 @@ private final class PurpleGradientButton: UIControl {
     }
 }
 
-// MARK: - QuizResultsView
-
 final class QuizResultsView: UIView {
 
     var onRetry: (() -> Void)?
@@ -44,7 +40,6 @@ final class QuizResultsView: UIView {
 
     private weak var viewModel: QuizViewModel?
 
-    // MARK: Header
     private let headerGradient = ResultsHeaderGradient()
     private let circle1 = UIView()
     private let circle2 = UIView()
@@ -79,7 +74,6 @@ final class QuizResultsView: UIView {
         return l
     }()
 
-    // MARK: Stats card
     private let statsCard: UIView = {
         let v = UIView()
         v.backgroundColor = .white
@@ -94,7 +88,6 @@ final class QuizResultsView: UIView {
     private let accuracyStat = StatColumn()
     private let timeStat     = StatColumn()
 
-    // MARK: Breakdown
     private let breakdownTitleLabel: UILabel = {
         let l = UILabel()
         l.text = "Answer Breakdown"
@@ -129,7 +122,6 @@ final class QuizResultsView: UIView {
     private var barWrongFraction: CGFloat = 0.5
     private let dotsContainer = UIStackView()
 
-    // MARK: Buttons
     private let retryButton  = PurpleGradientButton()
     private let shareButton  = SecondaryButton(icon: "square.and.arrow.up", title: "Share")
     private let homeButton   = SecondaryButton(icon: "house", title: "Home")
@@ -149,8 +141,6 @@ final class QuizResultsView: UIView {
         return iv
     }()
 
-    // MARK: Init
-
     init(viewModel: QuizViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -161,15 +151,11 @@ final class QuizResultsView: UIView {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    // MARK: Layout
-
     override func layoutSubviews() {
         super.layoutSubviews()
         let w = barBg.bounds.width * max(barWrongFraction, 0)
         barFill.snp.updateConstraints { $0.width.equalTo(max(w, 2)) }
     }
-
-    // MARK: Populate
 
     private func populate() {
         guard let vm = viewModel else { return }
@@ -205,8 +191,6 @@ final class QuizResultsView: UIView {
         }
     }
 
-    // MARK: Setup
-
     private func setupUI() {
         backgroundColor = UIColor(hex: "f8fafc")
 
@@ -230,7 +214,6 @@ final class QuizResultsView: UIView {
     }
 
     private func setupConstraints() {
-        // Header
         addSubview(headerGradient)
         headerGradient.addSubview(circle1)
         headerGradient.addSubview(circle2)
@@ -278,7 +261,6 @@ final class QuizResultsView: UIView {
             $0.leading.trailing.equalToSuperview().inset(16)
         }
 
-        // Stats card — overlaps bottom of header
         addSubview(statsCard)
         let statsRow = UIStackView(arrangedSubviews: [xpStat, accuracyStat, timeStat])
         statsRow.axis = .horizontal
@@ -294,7 +276,6 @@ final class QuizResultsView: UIView {
             $0.leading.trailing.equalToSuperview().inset(12)
         }
 
-        // Breakdown
         addSubview(breakdownTitleLabel)
         addSubview(breakdownCard)
 
@@ -337,7 +318,6 @@ final class QuizResultsView: UIView {
             $0.bottom.equalToSuperview().offset(-14)
         }
 
-        // Action buttons — pinned to bottom
         addSubview(retryButton)
         retryButton.addSubview(retryIcon)
         retryButton.addSubview(retryLabel)
@@ -364,20 +344,15 @@ final class QuizResultsView: UIView {
             $0.height.equalTo(52)
         }
 
-        // Constrain breakdown card top so it doesn't overlap buttons
         breakdownCard.snp.makeConstraints {
             $0.bottom.lessThanOrEqualTo(retryButton.snp.top).offset(-12)
         }
     }
 
-    // MARK: Actions
-
     @objc private func retryTapped() { onRetry?() }
     @objc private func shareTapped() { onShare?() }
     @objc private func homeTapped()  { onHome?() }
 }
-
-// MARK: - Helpers
 
 private func makeLegendLabel() -> UILabel {
     let l = UILabel()

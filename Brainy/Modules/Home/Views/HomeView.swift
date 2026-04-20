@@ -1,8 +1,6 @@
 import UIKit
 import SnapKit
 
-// MARK: - Gradient helper
-
 private final class GradientView: UIView {
     private let gradientLayer = CAGradientLayer()
 
@@ -22,16 +20,9 @@ private final class GradientView: UIView {
     }
 }
 
-// MARK: - HomeView
-
 final class HomeView: UIView {
-
-    // MARK: - Scroll
-
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-
-    // MARK: - Header
 
     private let greetingLabel = UILabel()
     private let titleLabel = UILabel()
@@ -40,8 +31,6 @@ final class HomeView: UIView {
     private let streakCountLabel = UILabel()
     private let bellButton = UIButton(type: .system)
     private let bellBadge = UIView()
-
-    // MARK: - Continue card
 
     private let continueCard = GradientView(
         colors: [UIColor(hex: "4f46e5"), UIColor(hex: "7c3aed")],
@@ -57,8 +46,6 @@ final class HomeView: UIView {
     private let progressLabel = UILabel()
     private let playButton = UIView()
     private let playIcon = UIImageView()
-
-    // MARK: - Daily Challenge
 
     private let challengeSectionStack = UIView()
     private let challengeHeaderLabel = UILabel()
@@ -78,20 +65,14 @@ final class HomeView: UIView {
     private let challengeStarIcon = UIImageView()
     private let challengeXPLabel = UILabel()
 
-    // MARK: - Categories
-
     private let categoriesHeaderLabel = UILabel()
     private let categoriesScrollView = UIScrollView()
     private let categoriesStack = UIStackView()
-
-    // MARK: - Popular
 
     private let popularHeaderLabel = UILabel()
     private let seeAllButton = UIButton(type: .system)
     private let popularScrollView = UIScrollView()
     private let popularStack = UIStackView()
-
-    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -103,8 +84,6 @@ final class HomeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-// MARK: - Setup
 
 private extension HomeView {
 
@@ -122,8 +101,6 @@ private extension HomeView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = true
     }
-
-    // MARK: Header
 
     func setupHeader() {
         greetingLabel.text = "Good morning 🌤️"
@@ -157,8 +134,6 @@ private extension HomeView {
         [streakFlameLabel, streakCountLabel].forEach { streakBadge.addSubview($0) }
         bellButton.addSubview(bellBadge)
     }
-
-    // MARK: Continue Card
 
     func setupContinueCard() {
         continueCard.layer.cornerRadius = 24
@@ -200,8 +175,6 @@ private extension HomeView {
         [continueCircle1, continueCircle2, continueLabelSmall, continueTitleLabel,
          progressBarBg, progressLabel, playButton].forEach { continueCard.addSubview($0) }
     }
-
-    // MARK: Daily Challenge
 
     func setupDailyChallenge() {
         challengeHeaderLabel.text = "Daily Challenge"
@@ -252,8 +225,6 @@ private extension HomeView {
         }
     }
 
-    // MARK: Categories
-
     func setupCategories() {
         categoriesHeaderLabel.text = "Categories"
         categoriesHeaderLabel.font = .systemFont(ofSize: 20, weight: .bold)
@@ -300,8 +271,6 @@ private extension HomeView {
         button.snp.makeConstraints { $0.height.equalTo(36) }
         return button
     }
-
-    // MARK: Popular
 
     func setupPopular() {
         popularHeaderLabel.text = "Popular"
@@ -461,8 +430,6 @@ private extension HomeView {
         return stack
     }
 
-    // MARK: Constraints
-
     func setupConstraints() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -482,7 +449,6 @@ private extension HomeView {
             $0.width.equalTo(scrollView)
         }
 
-        // Header
         greetingLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(60)
             $0.leading.equalToSuperview().inset(24)
@@ -522,7 +488,6 @@ private extension HomeView {
             $0.centerY.equalToSuperview()
         }
 
-        // Continue Card
         continueCard.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(24)
@@ -580,7 +545,6 @@ private extension HomeView {
             $0.size.equalTo(18)
         }
 
-        // Daily Challenge
         challengeHeaderLabel.snp.makeConstraints {
             $0.top.equalTo(continueCard.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
@@ -645,7 +609,6 @@ private extension HomeView {
             $0.centerX.bottom.equalToSuperview()
         }
 
-        // Categories
         categoriesHeaderLabel.snp.makeConstraints {
             $0.top.equalTo(challengeCard.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
@@ -662,7 +625,6 @@ private extension HomeView {
             $0.height.equalTo(categoriesScrollView)
         }
 
-        // Popular
         popularHeaderLabel.snp.makeConstraints {
             $0.top.equalTo(categoriesScrollView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(24)
