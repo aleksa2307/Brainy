@@ -60,6 +60,15 @@ final class AuthManager {
     func logout() {
         defaults.removeObject(forKey: currentUserIdKey)
     }
+
+    func updateUser(name: String, username: String) {
+        guard let current = currentUser else { return }
+        var users = allUsers
+        guard let idx = users.firstIndex(where: { $0.id == current.id }) else { return }
+        users[idx].name = name
+        users[idx].username = username
+        saveUsers(users)
+    }
 }
 
 private extension AuthManager {

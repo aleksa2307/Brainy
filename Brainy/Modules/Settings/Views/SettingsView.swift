@@ -122,6 +122,7 @@ final class SettingsView: UIView {
 
     private let privacyRow = SettingsItemView(emoji: "🛡️", title: "Privacy Policy", accessory: .chevron)
     private let termsRow = SettingsItemView(emoji: "📄", title: "Terms of Service", accessory: .chevron)
+    let editProfileButton = UIButton(type: .system)
     let privacyButton = UIButton(type: .system)
     let termsButton = UIButton(type: .system)
     
@@ -217,6 +218,9 @@ private extension SettingsView {
         let accountCard = buildCard(rows: [editProfileRow, changePasswordRow, emailPrefsRow])
         let prefsCard = buildCard(rows: [darkModeRow, notificationsRow, soundEffectsRow, hapticRow])
         let legalCard = buildCard(rows: [privacyRow, termsRow])
+
+        editProfileRow.addSubview(editProfileButton)
+        editProfileButton.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         privacyRow.addSubview(privacyButton)
         privacyButton.snp.makeConstraints { $0.edges.equalToSuperview() }

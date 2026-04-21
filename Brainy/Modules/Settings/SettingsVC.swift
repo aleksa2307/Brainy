@@ -11,6 +11,7 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
         settingsView.backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         settingsView.logOutButton.addTarget(self, action: #selector(logOutTapped), for: .touchUpInside)
+        settingsView.editProfileButton.addTarget(self, action: #selector(editProfileTapped), for: .touchUpInside)
         settingsView.privacyButton.addTarget(self, action: #selector(privacyTapped), for: .touchUpInside)
         settingsView.termsButton.addTarget(self, action: #selector(termsTapped), for: .touchUpInside)
     }
@@ -36,6 +37,10 @@ private extension SettingsViewController {
 
     @objc func backTapped() {
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc func editProfileTapped() {
+        navigationController?.pushViewController(EditProfileVC(), animated: true)
     }
 
     @objc func privacyTapped() {
