@@ -678,7 +678,7 @@ private extension ProfileView {
         }
 
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(60)
+            $0.top.equalTo(contentView.safeTop)
             $0.leading.equalToSuperview().inset(24)
         }
 

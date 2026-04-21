@@ -161,6 +161,7 @@ private extension CreateAccountView {
         )
 
         eyeButton.setImage(UIImage(systemName: "eye")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        eyeButton.imageView?.contentMode = .scaleAspectFit
         eyeButton.tintColor = UIColor(hex: "94a3b8")
         eyeButton.addTarget(self, action: #selector(eyeTapped), for: .touchUpInside)
     }

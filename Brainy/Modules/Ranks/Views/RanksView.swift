@@ -170,7 +170,7 @@ private extension RanksView {
         }
 
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(60)
+            $0.top.equalTo(contentView.safeTop)
             $0.leading.equalToSuperview().offset(24)
         }
 
