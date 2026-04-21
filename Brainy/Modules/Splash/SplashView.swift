@@ -19,6 +19,8 @@ final class SplashView: UIView {
     private let categoriesStack = UIStackView()
     private let statsStack = UIStackView()
     private let getStartedButton = UIButton(type: .system)
+    private let signInRow = UIStackView()
+    private let alreadyLabel = UILabel()
     private let signInButton = UIButton(type: .system)
 
     override init(frame: CGRect) {
@@ -47,7 +49,7 @@ final class SplashView: UIView {
 
         animateFadeUp(statsStack,      delay: 1.15, distance: 18)
         animateButton(getStartedButton, delay: 1.30)
-        animateFadeUp(signInButton,    delay: 1.46, distance: 12)
+        animateFadeUp(signInRow, delay: 1.46, distance: 12)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.startBlobFloat()
@@ -69,7 +71,7 @@ private extension SplashView {
         appIconContainer.alpha = 0
         appIconContainer.transform = CGAffineTransform(scaleX: 0.15, y: 0.15)
 
-        [titleLabel, subtitleLabel, statsStack, getStartedButton, signInButton].forEach {
+        [titleLabel, subtitleLabel, statsStack, getStartedButton, signInRow].forEach {
             $0.alpha = 0
             $0.transform = CGAffineTransform(translationX: 0, y: 24)
         }
@@ -354,24 +356,26 @@ private extension SplashView {
         getStartedButton.addTarget(self, action: #selector(getStartedTapped), for: .touchUpInside)
         addSubview(getStartedButton)
 
-        let signInAttr = NSMutableAttributedString(
-            string: "Already have an account? ",
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 15, weight: .medium),
-                .foregroundColor: UIColor(white: 1, alpha: 0.8)
-            ]
-        )
-        signInAttr.append(NSAttributedString(
+        alreadyLabel.text = "Already have an account? "
+        alreadyLabel.font = .systemFont(ofSize: 15, weight: .medium)
+        alreadyLabel.textColor = UIColor(white: 1, alpha: 0.8)
+
+        signInButton.setAttributedTitle(NSAttributedString(
             string: "Sign in",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 15, weight: .semibold),
                 .foregroundColor: UIColor.white,
                 .underlineStyle: NSUnderlineStyle.single.rawValue
             ]
-        ))
-        signInButton.setAttributedTitle(signInAttr, for: .normal)
+        ), for: .normal)
         signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
-        addSubview(signInButton)
+
+        signInRow.axis = .horizontal
+        signInRow.spacing = 0
+        signInRow.alignment = .center
+        signInRow.addArrangedSubview(alreadyLabel)
+        signInRow.addArrangedSubview(signInButton)
+        addSubview(signInRow)
     }
 
     func setupConstraints() {
@@ -429,7 +433,7 @@ private extension SplashView {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.height.equalTo(56)
         }
-        signInButton.snp.makeConstraints {
+        signInRow.snp.makeConstraints {
             $0.top.equalTo(getStartedButton.snp.bottom).offset(17)
             $0.centerX.equalToSuperview()
         }
