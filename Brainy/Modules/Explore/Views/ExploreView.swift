@@ -1,12 +1,13 @@
 import UIKit
 import SnapKit
 
-final class ExploreView: UIView, UITextFieldDelegate, UIGestureRecognizerDelegate {
+final class ExploreView: UIView, UITextFieldDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate {
 
     private weak var viewModel: ExploreViewModel?
 
     private let scrollView = UIScrollView()
     private let contentStack = UIStackView()
+    private let topBlur = TopBlurView()
     private let titleLabel = UILabel()
     private let searchField = UITextField()
     private let categoryScroll = UIScrollView()
@@ -146,6 +147,13 @@ private extension ExploreView {
             $0.edges.equalTo(categoryScroll.contentLayoutGuide)
             $0.height.equalTo(36)
         }
+
+        addSubview(topBlur)
+        topBlur.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(64)
+        }
+        scrollView.delegate = self
     }
 
     func rebuildCategoryChips() {
@@ -217,5 +225,11 @@ extension ExploreView {
             return false
         }
         return true
+    }
+}
+
+extension ExploreView {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        topBlur.update(scrollOffset: scrollView.contentOffset.y)
     }
 }

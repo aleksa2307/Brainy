@@ -71,6 +71,8 @@ final class ProfileView: UIView {
     private let menuCard = UIView()
     let settingsRowButton = UIButton(type: .system)
 
+    private let topBlur = TopBlurView()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -664,6 +666,7 @@ private extension ProfileView {
     func setupConstraints() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
+        scrollView.delegate = self
 
         [titleLabel, bellButton, settingsButton,
          userCard, statsTitleLabel, statsGridView,
@@ -741,7 +744,7 @@ private extension ProfileView {
         }
 
         levelFromLabel.snp.makeConstraints {
-            $0.top.equalTo(avatarView.snp.bottom).offset(16)
+            $0.top.equalTo(streakBadge.snp.bottom).offset(16)
             $0.leading.equalToSuperview().inset(20)
         }
         levelToLabel.snp.makeConstraints {
@@ -796,5 +799,17 @@ private extension ProfileView {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalToSuperview().inset(32)
         }
+
+        addSubview(topBlur)
+        topBlur.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(64)
+        }
+    }
+}
+
+extension ProfileView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        topBlur.update(scrollOffset: scrollView.contentOffset.y)
     }
 }

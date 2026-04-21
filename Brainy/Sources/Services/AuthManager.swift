@@ -61,6 +61,11 @@ final class AuthManager {
         defaults.removeObject(forKey: currentUserIdKey)
     }
 
+    func updatePassword(_ newPassword: String) {
+        guard let user = currentUser else { return }
+        savePassword(newPassword, forEmail: user.email)
+    }
+
     func updateUser(name: String, username: String) {
         guard let current = currentUser else { return }
         var users = allUsers

@@ -12,6 +12,7 @@ final class SettingsViewController: UIViewController {
         settingsView.backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         settingsView.logOutButton.addTarget(self, action: #selector(logOutTapped), for: .touchUpInside)
         settingsView.editProfileButton.addTarget(self, action: #selector(editProfileTapped), for: .touchUpInside)
+        settingsView.changePasswordButton.addTarget(self, action: #selector(changePasswordTapped), for: .touchUpInside)
         settingsView.privacyButton.addTarget(self, action: #selector(privacyTapped), for: .touchUpInside)
         settingsView.termsButton.addTarget(self, action: #selector(termsTapped), for: .touchUpInside)
     }
@@ -41,6 +42,20 @@ private extension SettingsViewController {
 
     @objc func editProfileTapped() {
         navigationController?.pushViewController(EditProfileVC(), animated: true)
+    }
+
+    @objc func changePasswordTapped() {
+        let email = AuthManager.shared.currentUser?.email ?? "your email"
+        let alert = UIAlertController(
+            title: "📧  Email Sent",
+            message: "We've sent a 6-digit verification code to\n\(email)\n\nCheck your inbox and enter the code on the next screen.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Enter Code →", style: .default) { [weak self] _ in
+            self?.navigationController?.pushViewController(ChangePasswordVC(), animated: true)
+        })
+        present(alert, animated: true)
     }
 
     @objc func privacyTapped() {

@@ -3,6 +3,7 @@ import UIKit
 final class SplashVC: UIViewController {
 
     private var splashView: SplashView { view as! SplashView }
+    private var hasAppeared = false
 
     override func loadView() {
         view = SplashView()
@@ -16,6 +17,8 @@ final class SplashVC: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        guard !hasAppeared else { return }
+        hasAppeared = true
         if AuthManager.shared.isLoggedIn {
             showMainApp()
         } else {

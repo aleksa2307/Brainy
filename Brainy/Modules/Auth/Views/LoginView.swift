@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class LoginView: UIView {
+final class LoginView: UIView, UITextFieldDelegate {
 
     var onBack: (() -> Void)?
     var onLogin: (() -> Void)?
@@ -105,6 +105,8 @@ private extension LoginView {
         emailField.keyboardType = .emailAddress
         emailField.autocapitalizationType = .none
         emailField.autocorrectionType = .no
+        emailField.returnKeyType = .next
+        emailField.delegate = self
         emailField.attributedPlaceholder = NSAttributedString(
             string: "your@email.com",
             attributes: [.foregroundColor: UIColor(hex: "0f172a").withAlphaComponent(0.5)]
@@ -129,6 +131,8 @@ private extension LoginView {
         passwordField.font = .systemFont(ofSize: 16)
         passwordField.textColor = UIColor(hex: "0f172a")
         passwordField.isSecureTextEntry = true
+        passwordField.returnKeyType = .done
+        passwordField.delegate = self
         passwordField.attributedPlaceholder = NSAttributedString(
             string: "Enter your password",
             attributes: [.foregroundColor: UIColor(hex: "0f172a").withAlphaComponent(0.5)]
@@ -297,9 +301,21 @@ private extension LoginView {
     @objc func forgotTapped() { onForgotPassword?() }
     @objc func signUpTapped() { onSignUp?() }
 
+
     @objc func eyeTapped() {
         passwordField.isSecureTextEntry.toggle()
         let imageName = passwordField.isSecureTextEntry ? "eye" : "eye.slash"
         eyeButton.setImage(UIImage(systemName: imageName)?.withRenderingMode(.alwaysTemplate), for: .normal)
+    }
+}
+
+extension LoginView {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField === emailField {
+            passwordField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return true
     }
 }

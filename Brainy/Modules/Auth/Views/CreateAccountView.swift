@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class CreateAccountView: UIView {
+final class CreateAccountView: UIView, UITextFieldDelegate {
 
     var onBack: (() -> Void)?
     var onCreate: (() -> Void)?
@@ -105,6 +105,8 @@ private extension CreateAccountView {
         nameField.textColor = UIColor(hex: "0f172a")
         nameField.autocapitalizationType = .words
         nameField.autocorrectionType = .no
+        nameField.returnKeyType = .next
+        nameField.delegate = self
         nameField.attributedPlaceholder = NSAttributedString(
             string: "Your full name",
             attributes: [.foregroundColor: UIColor(hex: "0f172a").withAlphaComponent(0.5)]
@@ -131,6 +133,8 @@ private extension CreateAccountView {
         emailField.keyboardType = .emailAddress
         emailField.autocapitalizationType = .none
         emailField.autocorrectionType = .no
+        emailField.returnKeyType = .next
+        emailField.delegate = self
         emailField.attributedPlaceholder = NSAttributedString(
             string: "your@email.com",
             attributes: [.foregroundColor: UIColor(hex: "0f172a").withAlphaComponent(0.5)]
@@ -155,6 +159,8 @@ private extension CreateAccountView {
         passwordField.font = .systemFont(ofSize: 16)
         passwordField.textColor = UIColor(hex: "0f172a")
         passwordField.isSecureTextEntry = true
+        passwordField.returnKeyType = .done
+        passwordField.delegate = self
         passwordField.attributedPlaceholder = NSAttributedString(
             string: "Enter your password",
             attributes: [.foregroundColor: UIColor(hex: "0f172a").withAlphaComponent(0.5)]
@@ -335,9 +341,23 @@ private extension CreateAccountView {
     @objc func createTapped() { onCreate?() }
     @objc func logInTapped() { onLogIn?() }
 
+
     @objc func eyeTapped() {
         passwordField.isSecureTextEntry.toggle()
         let imageName = passwordField.isSecureTextEntry ? "eye" : "eye.slash"
         eyeButton.setImage(UIImage(systemName: imageName)?.withRenderingMode(.alwaysTemplate), for: .normal)
+    }
+}
+
+extension CreateAccountView {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField === nameField {
+            emailField.becomeFirstResponder()
+        } else if textField === emailField {
+            passwordField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return true
     }
 }

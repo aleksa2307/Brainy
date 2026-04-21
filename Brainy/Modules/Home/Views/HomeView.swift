@@ -69,6 +69,7 @@ final class HomeView: UIView {
     private let seeAllButton = UIButton(type: .system)
     private let popularScrollView = UIScrollView()
     private let popularStack = UIStackView()
+    private let topBlur = TopBlurView()
 
     var onQuizSelected: ((ExploreQuizItem) -> Void)?
     var onContinueTapped: ((ExploreQuizItem) -> Void)?
@@ -609,5 +610,18 @@ private extension HomeView {
             $0.edges.equalToSuperview()
             $0.height.equalTo(popularScrollView)
         }
+
+        addSubview(topBlur)
+        topBlur.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(64)
+        }
+        scrollView.delegate = self
+    }
+}
+
+extension HomeView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        topBlur.update(scrollOffset: scrollView.contentOffset.y)
     }
 }

@@ -123,6 +123,7 @@ final class SettingsView: UIView {
     private let privacyRow = SettingsItemView(emoji: "🛡️", title: "Privacy Policy", accessory: .chevron)
     private let termsRow = SettingsItemView(emoji: "📄", title: "Terms of Service", accessory: .chevron)
     let editProfileButton = UIButton(type: .system)
+    let changePasswordButton = UIButton(type: .system)
     let privacyButton = UIButton(type: .system)
     let termsButton = UIButton(type: .system)
     
@@ -222,6 +223,9 @@ private extension SettingsView {
         editProfileRow.addSubview(editProfileButton)
         editProfileButton.snp.makeConstraints { $0.edges.equalToSuperview() }
 
+        changePasswordRow.addSubview(changePasswordButton)
+        changePasswordButton.snp.makeConstraints { $0.edges.equalToSuperview() }
+
         privacyRow.addSubview(privacyButton)
         privacyButton.snp.makeConstraints { $0.edges.equalToSuperview() }
 
@@ -267,6 +271,7 @@ private extension SettingsView {
             $0.height.equalTo(54)
             $0.bottom.equalToSuperview().inset(24)
         }
+
     }
 
     func buildSection(title: String, card: UIView) -> UIView {
@@ -345,3 +350,4 @@ private extension SettingsView {
         return shadow
     }
 }
+

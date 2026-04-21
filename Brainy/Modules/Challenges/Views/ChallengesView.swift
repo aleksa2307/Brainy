@@ -24,6 +24,7 @@ final class ChallengesView: UIView {
 
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    private let topBlur = TopBlurView()
 
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
@@ -284,6 +285,19 @@ private extension ChallengesView {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalToSuperview().inset(24)
         }
+
+        addSubview(topBlur)
+        topBlur.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(64)
+        }
+        scrollView.delegate = self
+    }
+}
+
+extension ChallengesView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        topBlur.update(scrollOffset: scrollView.contentOffset.y)
     }
 }
 

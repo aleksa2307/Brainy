@@ -19,6 +19,7 @@ final class EditProfileVC: UIViewController {
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
+        setupKeyboardAvoidance()
     }
 }
 

@@ -86,6 +86,7 @@ final class RanksView: UIView {
         return s
     }()
     private let contentView = UIView()
+    private let topBlur = TopBlurView()
 
     private let titleLabel: UILabel = {
         let l = UILabel()
@@ -200,6 +201,13 @@ private extension RanksView {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalToSuperview().offset(-24)
         }
+
+        addSubview(topBlur)
+        topBlur.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(64)
+        }
+        scrollView.delegate = self
     }
 
     func bindButtons() {
@@ -525,5 +533,11 @@ private extension RanksView {
             return s
         }
         return "\(points)"
+    }
+}
+
+extension RanksView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        topBlur.update(scrollOffset: scrollView.contentOffset.y)
     }
 }

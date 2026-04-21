@@ -18,6 +18,7 @@ final class CreateAccountVC: UIViewController {
         createView.onLogIn = { [weak self] in self?.showLogin() }
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
+        setupKeyboardAvoidance()
     }
 }
 
