@@ -11,6 +11,8 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
         settingsView.backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         settingsView.logOutButton.addTarget(self, action: #selector(logOutTapped), for: .touchUpInside)
+        settingsView.privacyButton.addTarget(self, action: #selector(privacyTapped), for: .touchUpInside)
+        settingsView.termsButton.addTarget(self, action: #selector(termsTapped), for: .touchUpInside)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -34,6 +36,19 @@ private extension SettingsViewController {
 
     @objc func backTapped() {
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc func privacyTapped() {
+        openURL("https://www.freeprivacypolicy.com/live/7600f2d0-5ff9-4bc9-a4e1-d8f5852fd0ab")
+    }
+
+    @objc func termsTapped() {
+        openURL("https://www.freeprivacypolicy.com/live/f2a3ed55-e345-4dc8-a1c4-108fb6a4bd06")
+    }
+
+    func openURL(_ string: String) {
+        guard let url = URL(string: string) else { return }
+        UIApplication.shared.open(url)
     }
 
     func showLogin() {

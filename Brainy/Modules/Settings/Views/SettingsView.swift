@@ -122,7 +122,8 @@ final class SettingsView: UIView {
 
     private let privacyRow = SettingsItemView(emoji: "🛡️", title: "Privacy Policy", accessory: .chevron)
     private let termsRow = SettingsItemView(emoji: "📄", title: "Terms of Service", accessory: .chevron)
-    private let licensesRow = SettingsItemView(emoji: "📜", title: "Open Source Licenses", accessory: .chevron)
+    let privacyButton = UIButton(type: .system)
+    let termsButton = UIButton(type: .system)
     
     private let appIconLabel = UILabel()
     private let appNameLabel = UILabel()
@@ -163,12 +164,12 @@ private extension SettingsView {
         appIconLabel.font = .systemFont(ofSize: 24)
         appIconLabel.textAlignment = .center
 
-        appNameLabel.text = "QuizMaster"
+        appNameLabel.text = "Brainy"
         appNameLabel.font = .systemFont(ofSize: 14, weight: .bold)
         appNameLabel.textColor = UIColor(hex: "64748b")
         appNameLabel.textAlignment = .center
 
-        versionLabel.text = "Version 2.4.1 · Build 401"
+        versionLabel.text = "Version 1.0 · Build 1"
         versionLabel.font = .systemFont(ofSize: 12)
         versionLabel.textColor = UIColor(hex: "cbd5e1")
         versionLabel.textAlignment = .center
@@ -215,7 +216,13 @@ private extension SettingsView {
 
         let accountCard = buildCard(rows: [editProfileRow, changePasswordRow, emailPrefsRow])
         let prefsCard = buildCard(rows: [darkModeRow, notificationsRow, soundEffectsRow, hapticRow])
-        let legalCard = buildCard(rows: [privacyRow, termsRow, licensesRow])
+        let legalCard = buildCard(rows: [privacyRow, termsRow])
+
+        privacyRow.addSubview(privacyButton)
+        privacyButton.snp.makeConstraints { $0.edges.equalToSuperview() }
+
+        termsRow.addSubview(termsButton)
+        termsButton.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         let accountSection = buildSection(title: "ACCOUNT", card: accountCard)
         let prefsSection = buildSection(title: "PREFERENCES", card: prefsCard)

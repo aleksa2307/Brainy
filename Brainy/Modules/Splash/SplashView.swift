@@ -231,7 +231,7 @@ private extension SplashView {
     }
 
     func setupLabels() {
-        titleLabel.text = "QuizMaster"
+        titleLabel.text = "Brainy"
         titleLabel.font = .systemFont(ofSize: 40, weight: .bold)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
